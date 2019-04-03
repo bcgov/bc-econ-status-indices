@@ -7,7 +7,7 @@ Add a project state badge
 bc-econ-status-indices
 ============================
 
-A set of R scripts to use tidied statscan taxdata and develop area-based economic status indices for British Columbia.
+A set of R scripts that use tidied statscan taxdata to develop area-based economic status indices for British Columbia.
 
 
 
