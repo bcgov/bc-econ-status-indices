@@ -10,6 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
+# install/load packages and dependencies
 library(here)
 library(data.table)
 library(dplyr)
@@ -63,16 +64,18 @@ qqnorm(ind_1$`total|income|median|total`, xlab = "index", ylab = "total median i
 
 #-------------------------------------------------------------------------------
 
-# Load the tabplot package
+# Load the tabplot package: library(tabplot)
+# tidy table before tableplot
 tableplot(ind_1)
 
 #-------------------------------------------------------------------------------
-
+## Density exploration of data
 # density plots for all geographical levels based on total median income
 ggplot(ind_1) + geom_density(aes(x = `total|income|median|total`, color = year)) +
   facet_wrap(~ `level|of|geo|`, scales = "free") +
   labs(title = "Density plots for geo levels", xlab = "Total median income")
 #-------------------------------------------------------------------------------
+## Boxplot exploration of data
 # all geo levels boxplot
 
 ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`)) +
@@ -99,6 +102,35 @@ ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = factor
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "11", "12", "21", "31", "41", "42", "51", "61"),
                    labels = c("URBAN FSA", "RURAL PC", "OTHER URBAN", "CITY TTL", "RURAL COMM", "OTHER PROV TTL", "PRO TER TTL", "CANADA", "CD", "FED ELE D", "CMA", "CA", "ECON REGION", "CT")) +
   geom_boxplot() +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+
+# boxplot removing Canada and provincial level of geo's
+ind_1_plot <- ind_1 %>%
+  select(`taxfilers|#|`,`level|of|geo|`) %>%
+  filter(ind_1$`level|of|geo|` != 11 & ind_1$`level|of|geo|` != 12)
+
+ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, group = `level|of|geo|`)) +
+  scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "21", "31", "41", "42", "51", "61"),
+                   labels = c("URBAN FSA", "RURAL PC", "OTHER URBAN", "CITY TTL", "RURAL COMM", "OTHER PROV TTL", "CD", "FED ELE D", "CMA", "CA", "ECON REGION", "CT")) +
+  geom_boxplot(fill = "white", colour = "#3366FF") +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+# boxplot removing Canada and provincial level of geo's based on years
+ind_1_plot <- ind_1 %>%
+  select(`taxfilers|#|`,`level|of|geo|`, `year`) %>%
+  filter(ind_1$`level|of|geo|` != 11 & ind_1$`level|of|geo|` != 12)
+
+ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = factor(`year`))) +
+  scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "21", "31", "41", "42", "51", "61"),
+                   labels = c("URBAN FSA", "RURAL PC", "OTHER URBAN", "CITY TTL", "RURAL COMM", "OTHER PROV TTL", "CD", "FED ELE D", "CMA", "CA", "ECON REGION", "CT")) +
+  geom_boxplot() + #fill = "white", colour = "#3366FF") +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
   labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
