@@ -5,8 +5,17 @@
 bc-econ-status-indices
 ============================
 
-A set of R scripts that use tidied statscan taxdata to develop area-based economic status indices for British Columbia.
+A set of R scripts that use tidied Statistics Canada taxdata developed [previously](https://github.com/bcgov/statscan-taxdata-tidying) in order to generate area-based economic status indices for British Columbia.
 
+The annual income tax data in this repository are purchased from Statistics Canada and are under [Statistics Canada Open Licence](https://www.statcan.gc.ca/eng/reference/licence). 
+
+### Usage 
+
+The source .csv files are tidied anonymized individual and family income tax data that are placed in the `input-data` sub-folder.  
+
+The codes for economic indices and visualization of data are in `R` sub-folder.  
+
+Generated graphs are stored in `output-data` subfolder.  
 
 
 ### Getting Help or Reporting an Issue 
