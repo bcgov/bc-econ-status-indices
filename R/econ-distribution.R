@@ -47,7 +47,7 @@ hist(ind_1$`total|income|median|total`, xlab = "total median income", ylab = "fr
 # More Information: https://www12.statcan.gc.ca/census-recensement/2016/ref/98-304/chap12-eng.cfm
 
 #-------------------------------------------------------------------------------
-# Set up a two-by-two plot array
+# Set up a two-by-two plot array for total median income
 par(mfrow = c(2, 2))
 
 # Plot the raw total median income
@@ -63,7 +63,14 @@ plot(density(ind_1$`total|income|median|total`), xlab = "index", ylab = "total m
 qqnorm(ind_1$`total|income|median|total`, xlab = "index", ylab = "total median income", main = "QQ-plot")
 
 #-------------------------------------------------------------------------------
+# Set up a two-by-two plot array for age of taxfiler distribution
+par(mfrow = c(2, 2))
+plot(ind_1$`all|persons|average|age`, col = "blue", xlab = "index", ylab = "Taxfiler age distribution", main = "Scatterplot")
+truehist(ind_1$`all|persons|average|age`, xlab = "index", ylab = "Taxfiler age distribution", main = "Histogram")
+plot(density(ind_1$`all|persons|average|age`), xlab = "index", ylab = "Taxfiler age distribution", main = "Density plot")
+qqnorm(ind_1$`all|persons|average|age`, xlab = "index", ylab = "Taxfiler age distribution", main = "QQ-plot")
 
+#-------------------------------------------------------------------------------
 # Load the tabplot package: library(tabplot)
 # tidy table before tableplot
 tableplot(ind_1)
