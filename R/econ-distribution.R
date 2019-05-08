@@ -10,15 +10,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-# install/load packages and dependencies
-library(here)
-library(data.table)
-library(dplyr)
-library(readr)
-library(ggplot2)
-library(lattice)
-library(MASS)
-library(tabplot)
+
+## Source setup and function scripts
+if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 
 #-------------------------------------------------------------------------------
 

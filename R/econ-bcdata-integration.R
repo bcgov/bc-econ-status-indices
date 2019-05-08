@@ -11,16 +11,10 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-# install/load packages and dependencies
-library(here)
-library(data.table)
-library(dplyr)
-library(readr)
-library(ggplot2)
-library(lattice)
-library(MASS)
-library(tabplot)
+## Source setup and function scripts
+if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 
+#-------------------------------------------------------------------------------
 
 # read in the csv
 ind_1 <- fread(here("input-data", "1_IND.csv"))
@@ -43,14 +37,10 @@ ind_1 <- fread(here("input-data", "1_IND.csv"))
 # More Information: https://www12.statcan.gc.ca/census-recensement/2016/ref/98-304/chap12-eng.cfm
 
 
-remotes::install_github("bcgov/bcdata")
-library(bcdata)
-
 # browse the bcdc to find geographical concepts
 bcdata::bcdc_browse()
 
 bcdata::bcdc_search("census")
-bcdata::bcdc_get_data("census")
 
 census_sub <- bcdata::bcdc_get_data("4c5618c6-38dd-4a62-a3de-9408b4974bb6")
 max.plot(census_sub)
