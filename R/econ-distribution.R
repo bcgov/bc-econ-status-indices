@@ -66,9 +66,17 @@ qqnorm(ind_1$`total|income|median|total`, xlab = "index", ylab = "total median i
 
 # Set up a two-by-two plot array for age of taxfiler distribution
 par(mfrow = c(2, 2))
+
+# Plot the normalized histogram of age distribution
 plot(ind_1$`all|persons|average|age`, col = "blue", xlab = "index", ylab = "Taxfiler age distribution", main = "Scatterplot")
+
+# Plot the normalized histogram of age distribution
 truehist(ind_1$`all|persons|average|age`, xlab = "index", ylab = "Taxfiler age distribution", main = "Histogram")
+
+# Plot the density of age distribution
 plot(density(ind_1$`all|persons|average|age`), xlab = "index", ylab = "Taxfiler age distribution", main = "Density plot")
+
+# Construct the normal (quantile-quantile) QQ-plot of age distribution
 qqnorm(ind_1$`all|persons|average|age`, xlab = "index", ylab = "Taxfiler age distribution", main = "QQ-plot")
 
 #-------------------------------------------------------------------------------
@@ -94,7 +102,6 @@ ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`)) +
   labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-
 # provincial geo levels boxplot
 ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `total|income|median|total`, group = `level|of|geo|`)) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "11", "12", "21", "31", "41", "42", "51", "61"),
@@ -104,7 +111,6 @@ ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `total|income|median|total`, gr
   labs(title = "Total Median Income", subtitle = "based on geo level", y = "Median Income of Taxfilers") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-
 # all geo level boxplot in years
 ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = factor(`year`))) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "11", "12", "21", "31", "41", "42", "51", "61"),
@@ -113,8 +119,6 @@ ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = factor
   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
   labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-
 
 # boxplot removing Canada and provincial level of geo's
 ind_1_plot <- ind_1 %>%
@@ -128,7 +132,6 @@ ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, group = `l
   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
   labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
 
 # boxplot removing Canada and provincial level of geo's based on years
 ind_1_plot <- ind_1 %>%
