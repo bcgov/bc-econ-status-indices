@@ -63,6 +63,7 @@ plot(density(ind_1$`total|income|median|total`), xlab = "index", ylab = "total m
 qqnorm(ind_1$`total|income|median|total`, xlab = "index", ylab = "total median income", main = "QQ-plot")
 
 #-------------------------------------------------------------------------------
+
 # Set up a two-by-two plot array for age of taxfiler distribution
 par(mfrow = c(2, 2))
 plot(ind_1$`all|persons|average|age`, col = "blue", xlab = "index", ylab = "Taxfiler age distribution", main = "Scatterplot")
