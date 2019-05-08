@@ -24,27 +24,8 @@ library(tabplot)
 
 # read in the csv
 ind_1 <- fread(here("input-data", "1_IND.csv"))
-head(ind_1)
-dim(ind_1)
 summary(ind_1$`total|income|median|total`)
 hist(ind_1$`total|income|median|total`, xlab = "total median income", ylab = "frequency", main = "histogram")
-
-# Levels of geography are:
-# 3 (URBAN FSA)
-# 6 (RURAL POSTAL CODE AREAS)
-# 7 (OTHER URBAN AREAS)
-# 8 (CITY TOTAL)
-# 9 (RURAL COMMUNITIES)
-# 10 (OTHER PROVINCIAL TOTAL)
-# 11 (PROVINCE/TERRITORY TOTAL)
-# 12 (CANADA)
-# 21 (CENSUS DIVISION)
-# 31 (FEDERAL ELECTORAL DISTRICT)
-# 51 (ECONOMIC REGION)
-# 41 (CENSUS METROPOLITAN AREA)
-# 42 (CENSUS AGGLOMERATION)
-# 61 (CENSUS TRACT)
-# More Information: https://www12.statcan.gc.ca/census-recensement/2016/ref/98-304/chap12-eng.cfm
 
 #-------------------------------------------------------------------------------
 # Set up a two-by-two plot array for total median income
