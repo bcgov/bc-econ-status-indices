@@ -71,7 +71,7 @@ ggplot(ind_1) + geom_density(aes(x = `total|income|median|total`, color = year))
 
 ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`)) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "11", "12", "21", "31", "41", "42", "51", "61"),
-                   labels = c("URBAN FSA", "RURAL PC", "OTHER URBAN", "CITY TTL", "RURAL COMM", "OTHER PROV TTL", "PRO TER TTL", "CANADA", "CD", "FED ELE D", "CMA", "CA", "ECON REGION", "CT")) +
+                   labels = c("FSA", "RURPC", "OUA", "CITY", "RURC", "OPROV", "PROV", "CANADA", "CD", "FED", "CMA", "CA", "ER", "CT")) +
   geom_boxplot( fill = "white", colour = "#3366FF") +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
   labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +
@@ -80,7 +80,7 @@ ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`)) +
 # provincial geo levels boxplot
 ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `total|income|median|total`, group = `level|of|geo|`)) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "11", "12", "21", "31", "41", "42", "51", "61"),
-                   labels = c("URBAN FSA", "RURAL PC", "OTHER URBAN", "CITY TTL", "RURAL COMM", "OTHER PROV TTL", "PRO TER TTL", "CANADA", "CD", "FED ELE D", "CMA", "CA", "ECON REGION", "CT")) +
+                   labels = c("FSA", "RURPC", "OUA", "CITY", "RURC", "OPROV", "PROV", "CANADA", "CD", "FED", "CMA", "CA", "ER", "CT")) +
   geom_boxplot(fill = "white", colour = "#3366FF") +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
   labs(title = "Total Median Income", subtitle = "based on geo level", y = "Median Income of Taxfilers") +
@@ -89,7 +89,7 @@ ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `total|income|median|total`, gr
 # all geo level boxplot in years
 ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = factor(`year`))) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "11", "12", "21", "31", "41", "42", "51", "61"),
-                   labels = c("URBAN FSA", "RURAL PC", "OTHER URBAN", "CITY TTL", "RURAL COMM", "OTHER PROV TTL", "PRO TER TTL", "CANADA", "CD", "FED ELE D", "CMA", "CA", "ECON REGION", "CT")) +
+                   labels = c("FSA", "RURPC", "OUA", "CITY", "RURC", "OPROV", "PROV", "CANADA", "CD", "FED", "CMA", "CA", "ER", "CT")) +
   geom_boxplot() +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
   labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +
@@ -102,7 +102,7 @@ ind_1_plot <- ind_1 %>%
 
 ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, group = `level|of|geo|`)) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "21", "31", "41", "42", "51", "61"),
-                   labels = c("URBAN FSA", "RURAL PC", "OTHER URBAN", "CITY TTL", "RURAL COMM", "OTHER PROV TTL", "CD", "FED ELE D", "CMA", "CA", "ECON REGION", "CT")) +
+                   labels = c("FSA", "RURPC", "OUA", "CITY", "RURC", "OPROV", "CD", "FED", "CMA", "CA", "ER", "CT")) +
   geom_boxplot(fill = "white", colour = "#3366FF") +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
   labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +
@@ -115,7 +115,7 @@ ind_1_plot <- ind_1 %>%
 
 ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = factor(`year`))) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "21", "31", "41", "42", "51", "61"),
-                   labels = c("URBAN FSA", "RURAL PC", "OTHER URBAN", "CITY TTL", "RURAL COMM", "OTHER PROV TTL", "CD", "FED ELE D", "CMA", "CA", "ECON REGION", "CT")) +
+                   labels = c("FSA", "RURPC", "OUA", "CITY", "RURC", "OPROV", "CD", "FED", "CMA", "CA", "ER", "CT")) +
   geom_boxplot() + #fill = "white", colour = "#3366FF") +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
   labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +

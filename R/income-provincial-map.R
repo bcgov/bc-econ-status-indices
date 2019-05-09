@@ -14,13 +14,7 @@
 ## Source setup and function scripts
 if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 
-
-library(data.table)
-library(dplyr)
-library(leaflet)
-library(rgdal)
-library(stringr)
-
+#-------------------------------------------------------------------------------
 
 # Read and clean the data
 ind_1 <- fread(here("input-data", "1_IND.csv"))
@@ -64,7 +58,7 @@ lineColor <- "#000000"
 hoverColor <- "red"
 lineWeight <- 0.5
 
-pal <- colorNumeric(palette = 'Reds', c(max(ind_1_df$INCOME), min(ind_1_df$INCOME)), reverse = TRUE)
+pal <- colorNumeric(palette = 'Reds', c(max(ind_1_df$INCOME), min(ind_1_df$INCOME)), reverse = FALSE)
 
 provinces2 %>%
   leaflet() %>%
@@ -90,6 +84,53 @@ provinces2 %>%
             position = "bottomleft",
             title = "Median Income",
             labFormat = labelFormat(suffix = ""))
+
+#-------------------------------------------------------------------------------
+
+ui <- bootstrapPage(
+  tags$style(type = "text/css", "html, body {width:100%;height:100%}"),
+  leafletOutput("map", width = "100%", height = "100%"),
+  absolutePanel(top = 10, right = 10,
+                style="z-index:500;", # legend over my map (map z = 400)
+                tags$h3("map"),
+                sliderInput("period", "Chronology",
+                            min(ind_1_df$YEAR),
+                            max(ind_1_df$YEAR),
+                            value = range(ind_1_df$YEAR),
+                            step = 1,
+                            sep = ""
+                )
+  )
+)
+
+server <- function(input, output, session) {
+
+  # reactive filtering data from UI
+
+  reactive_data_chrono <- reactive({
+    df %>%
+      filter(year >= input$periode[1] & YEAR <= input$period[2])
+  })
+
+
+  # static backround map
+  output$map <- renderLeaflet({
+    leaflet(df) %>%
+      addTiles() %>%
+      fitBounds(~min(lng), ~min(lat), ~max(lng), ~max(lat))
+  })
+
+  # reactive circles map
+  observe({
+    leafletProxy("map", data = reactive_data_chrono()) %>%
+      clearShapes() %>%
+      addMarkers(lng=~lng,
+                 lat=~lat,
+                 layerId = ~id) # Assigning df id to layerid
+  })
+}
+
+shinyApp(ui, server)
 
 #-------------------------------------------------------------------------------
 

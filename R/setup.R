@@ -21,7 +21,10 @@ library(lattice)
 library(MASS)
 library(tabplot)
 library(bcdata)
-
+library(leaflet)
+library(rgdal)
+library(stringr)
+library(shiny)
 
 #-------------------------------------------------------------------------------
 
