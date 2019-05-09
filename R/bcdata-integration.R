@@ -18,7 +18,12 @@ if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 
 # read in the csv
 ind_1 <- fread(here("input-data", "1_IND.csv"))
-ind_1$`place|me|geo|`
+ind_1_data <- ind_1 %>%
+  select(`taxfilers|#|`,`level|of|geo|`, `place|me|geo|`, `postal|area|`) %>%
+  filter(ind_1$`level|of|geo|` != 11 & ind_1$`level|of|geo|` != 12)
+
+#post_area <- ind_1_data %>%
+  #mutate(`postal|area|` = str_extract(`postal|area|`, "^5"))
 
 #-------------------------------------------------------------------------------
 
@@ -31,19 +36,19 @@ bcdata::bcdc_search("census")
 
 # Current Census Subdivision Boundaries
 CSD <- bcdata::bcdc_get_data("4c5618c6-38dd-4a62-a3de-9408b4974bb6")
-max.plot(CSD)
+mapview(CSD)
 
-# Census Tracts (All Years)
-CT <- bcdata::bcdc_get_data("cb6db007-bda7-471f-96e8-c0c9ee2db0ac")
-max.plot(CT)
+# Census Tracts
+CT <- bcdata::bcdc_get_data("539aae5b-12f6-4934-9592-9b27acc827f8")
+mapview(CT)
 
 # Current Census Metropolitan Areas (other, wms, kml)
 CMA <- bcdata::bcdc_get_data("a6fb34b7-0937-4718-8f1f-43dba2c0f407")
-max.plot(CMA)
+mapview(CMA)
 
 # Current Census Division Boundaries (other, wms, kml)
 CD <- bcdata::bcdc_get_data("ef17918a-597a-4012-8534-f8e71d8735b3")
-max.plot(CD)
+mapview(CD)
 
 #-------------------------------------------------------------------------------
 
@@ -51,7 +56,7 @@ bcdata::bcdc_search("federal")
 
 # Federal Electoral Districts of Canada (xlsx)
 FED <- bcdata::bcdc_get_data("3d520a7-e1f5-4fde-83e7-c7974430fb40")
-max.plot(FED)
+mapview(FED)
 
 #-------------------------------------------------------------------------------
 
@@ -59,7 +64,7 @@ bcdata::bcdc_search("economic region")
 
 # Current Census Economic Regions (other, wms, kml)
 ER <- bcdata::bcdc_get_data("1aebc451-a41c-496f-8b18-6f414cde93b7")
-max.plot(ER)
+mapview(ER)
 
 #-------------------------------------------------------------------------------
 

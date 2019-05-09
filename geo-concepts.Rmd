@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Taxdata integration with Data Catalogue
 
-### Levels of geography:
+### exploring levels of geography:
 
 Levels of geography in taxdata include:    
 -  3 FSA: ([URBAN FSA](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo036-eng.cfm))   

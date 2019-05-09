@@ -24,6 +24,7 @@ library(bcdata)
 library(leaflet)
 library(rgdal)
 library(stringr)
+library(mapview)
 library(shiny)
 
 #-------------------------------------------------------------------------------
