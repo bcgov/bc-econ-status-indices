@@ -21,7 +21,7 @@ Levels of geography in taxdata include:
 - 9 RURC: (RURAL COMMUNITIES)   
 - 10 OPROV: (OTHER PROVINCIAL TOTAL)   
 - 11 PROV: ([PROVINCE/TERRITORY TOTAL](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo038-eng.cfm))   
-- 12 ([CANADA](https://www12.statcan.gc.ca/census-recensement/2016/ref/98-304/chap12-eng.cfm))   
+- 12 CANADA: ([CANADA](https://www12.statcan.gc.ca/census-recensement/2016/ref/98-304/chap12-eng.cfm))   
 - 21 CD: ([CENSUS DIVISION](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo008-eng.cfm))   
 - 31 FED: ([FEDERAL ELECTORAL DISTRICT](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo025-eng.cfm))   
 - 51 ER: ([ECONOMIC REGION](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo022-eng.cfm))   
