@@ -18,29 +18,51 @@ if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 
 # read in the csv
 ind_1 <- fread(here("input-data", "1_IND.csv"))
+ind_1$`place|me|geo|`
 
-# Levels of geography are:
-# 3 (URBAN FSA)
-# 6 (RURAL POSTAL CODE AREAS)
-# 7 (OTHER URBAN AREAS)
-# 8 (CITY TOTAL)
-# 9 (RURAL COMMUNITIES)
-# 10 (OTHER PROVINCIAL TOTAL)
-# 11 (PROVINCE/TERRITORY TOTAL)
-# 12 (CANADA)
-# 21 (CENSUS DIVISION)
-# 31 (FEDERAL ELECTORAL DISTRICT)
-# 51 (ECONOMIC REGION)
-# 41 (CENSUS METROPOLITAN AREA)
-# 42 (CENSUS AGGLOMERATION)
-# 61 (CENSUS TRACT)
-# More Information: https://www12.statcan.gc.ca/census-recensement/2016/ref/98-304/chap12-eng.cfm
-
+#-------------------------------------------------------------------------------
 
 # browse the bcdc to find geographical concepts
+# missing CA, RURC
+
 bcdata::bcdc_browse()
 
 bcdata::bcdc_search("census")
 
-census_sub <- bcdata::bcdc_get_data("4c5618c6-38dd-4a62-a3de-9408b4974bb6")
-max.plot(census_sub)
+# Current Census Subdivision Boundaries
+CSD <- bcdata::bcdc_get_data("4c5618c6-38dd-4a62-a3de-9408b4974bb6")
+max.plot(CSD)
+
+# Census Tracts (All Years)
+CT <- bcdata::bcdc_get_data("cb6db007-bda7-471f-96e8-c0c9ee2db0ac")
+max.plot(CT)
+
+# Current Census Metropolitan Areas (other, wms, kml)
+CMA <- bcdata::bcdc_get_data("a6fb34b7-0937-4718-8f1f-43dba2c0f407")
+max.plot(CMA)
+
+# Current Census Division Boundaries (other, wms, kml)
+CD <- bcdata::bcdc_get_data("ef17918a-597a-4012-8534-f8e71d8735b3")
+max.plot(CD)
+
+#-------------------------------------------------------------------------------
+
+bcdata::bcdc_search("federal")
+
+# Federal Electoral Districts of Canada (xlsx)
+FED <- bcdata::bcdc_get_data("3d520a7-e1f5-4fde-83e7-c7974430fb40")
+max.plot(FED)
+
+#-------------------------------------------------------------------------------
+
+bcdata::bcdc_search("economic region")
+
+# Current Census Economic Regions (other, wms, kml)
+ER <- bcdata::bcdc_get_data("1aebc451-a41c-496f-8b18-6f414cde93b7")
+max.plot(ER)
+
+#-------------------------------------------------------------------------------
+
+
+
+

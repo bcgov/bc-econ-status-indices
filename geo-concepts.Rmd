@@ -29,7 +29,7 @@ Levels of geography in taxdata include:
 - 42 CA: ([CENSUS AGGLOMERATION](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo005-eng.cfm))   
 - 61 CT: ([CENSUS TRACT](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo013-eng.cfm))   
 
-### Data Catalogue:
+### Data Catalogue queries for geography levels:
 
 ```{r census, eval = FALSE}
 bcdata::bcdc_browse()
