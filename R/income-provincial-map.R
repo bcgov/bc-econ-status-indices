@@ -109,9 +109,10 @@ lineColor <- "#000000"
 hoverColor <- "red"
 lineWeight <- 0.5
 
-pal1 <- colorNumeric(palette = 'Purples', c(max(ind_1_df$INCOME), min(ind_1_df$INCOME)), reverse = FALSE)
-pal2 <- colorNumeric(palette = 'Blues', c(max(ind_1_df_males$INCOME), min(ind_1_df_males$INCOME)), reverse = FALSE)
-pal3 <- colorNumeric(palette = 'Reds', c(max(ind_1_df_females$INCOME), min(ind_1_df_females$INCOME)), reverse = FALSE)
+pal <- colorNumeric(palette = 'Purples', c(max(ind_1_df_males$INCOME), min(ind_1_df_females$INCOME)), reverse = FALSE)
+#pal1 <- colorNumeric(palette = 'Purples', c(max(ind_1_df$INCOME), min(ind_1_df$INCOME)), reverse = FALSE)
+#pal2 <- colorNumeric(palette = 'Blues', c(max(ind_1_df_males$INCOME), min(ind_1_df_males$INCOME)), reverse = FALSE)
+#pal3 <- colorNumeric(palette = 'Reds', c(max(ind_1_df_females$INCOME), min(ind_1_df_females$INCOME)), reverse = FALSE)
 
 provinces2 %>%
   leaflet() %>%
@@ -121,7 +122,7 @@ provinces2 %>%
   addTiles() %>%
   setView(-110.09, 62.7,  zoom = 3) %>%
   addPolygons(data = subset(provinces2, name %in% c("British Columbia", "Alberta", "Saskatchewan", "Manitoba", "Ontario", "Québec", "New Brunswick", "Prince Edward Island", "Nova Scotia", "Newfoundland and Labrador", "Yukon", "Northwest Territories", "Nunavut")),
-              fillColor = ~ pal1(INCOME),
+              fillColor = ~ pal(INCOME),
               fillOpacity = 0.5,
               stroke = TRUE,
               weight = lineWeight,
@@ -134,7 +135,7 @@ provinces2 %>%
               group = "Both") %>%
 
   addPolygons(data = subset(provinces2_males, name %in% c("British Columbia", "Alberta", "Saskatchewan", "Manitoba", "Ontario", "Québec", "New Brunswick", "Prince Edward Island", "Nova Scotia", "Newfoundland and Labrador", "Yukon", "Northwest Territories", "Nunavut")),
-              fillColor = ~ pal2(INCOME),
+              fillColor = ~ pal(INCOME),
               fillOpacity = 0.5,
               stroke = TRUE,
               weight = lineWeight,
@@ -148,7 +149,7 @@ provinces2 %>%
 
 
   addPolygons(data = subset(provinces2_females, name %in% c("British Columbia", "Alberta", "Saskatchewan", "Manitoba", "Ontario", "Québec", "New Brunswick", "Prince Edward Island", "Nova Scotia", "Newfoundland and Labrador", "Yukon", "Northwest Territories", "Nunavut")),
-              fillColor = ~ pal3(INCOME),
+              fillColor = ~ pal(INCOME),
               fillOpacity = 0.5,
               stroke = TRUE,
               weight = lineWeight,
@@ -164,7 +165,7 @@ provinces2 %>%
   addLayersControl(overlayGroups = c('Males', 'Females', 'Both'),
                    options = layersControlOptions(collapsed = FALSE),
                    position = 'topright') %>%
-  addLegend(pal = pal1,
+  addLegend(pal = pal,
             values = ind_1_df$INCOME,
             position = "bottomleft",
             title = "Total Median Income",
