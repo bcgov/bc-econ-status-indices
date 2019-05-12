@@ -23,11 +23,39 @@ ind_1_df <- ind_1 %>%
   filter(`year` == "2000") %>%
   select(`year`, `place|me|geo|`, `total|income|median|total`) %>%
   mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"QU<c9>BEC","Québec")) %>%
-  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"NEWFOUNDLAND","Newfoundland and Labrador")) %>%
   mutate(`place|me|geo|` = str_to_title(`place|me|geo|`)) %>%
+  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"Newfoundland", "Newfoundland and Labrador")) %>%
   rename("YEAR" =`year`, "GEO" = `place|me|geo|`, "INCOME" = `total|income|median|total`)
 
 print(glimpse(ind_1_df))
+
+#-------------------------------------------------------------------------------
+
+ind_1_df_females <- ind_1 %>%
+  filter(`level|of|geo|` == "11") %>%
+  filter(`year` == "2000") %>%
+  select(`year`, `place|me|geo|`, `total|income|median|females`) %>%
+  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"QU<c9>BEC","Québec")) %>%
+  mutate(`place|me|geo|` = str_to_title(`place|me|geo|`)) %>%
+  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"Newfoundland", "Newfoundland and Labrador")) %>%
+  rename("YEAR" =`year`, "GEO" = `place|me|geo|`, "INCOME" = `total|income|median|females`)
+
+print(glimpse(ind_1_df_females))
+
+#-------------------------------------------------------------------------------
+
+ind_1_df_males <- ind_1 %>%
+  filter(`level|of|geo|` == "11") %>%
+  filter(`year` == "2000") %>%
+  select(`year`, `place|me|geo|`, `total|income|median|males`) %>%
+  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"QU<c9>BEC","Québec")) %>%
+  mutate(`place|me|geo|` = str_to_title(`place|me|geo|`)) %>%
+  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"Newfoundland", "Newfoundland and Labrador")) %>%
+  rename("YEAR" =`year`, "GEO" = `place|me|geo|`, "INCOME" = `total|income|median|males`)
+
+print(glimpse(ind_1_df_males))
+
+#-------------------------------------------------------------------------------
 
 # If the .shp files (provinces) aren't already downloaded on your system, this command downloads them
 if (!file.exists("./polygons/ne_50m_admin_1_states_provinces_lakes/ne_50m_admin_1_states_provinces_lakes.dbf")){
@@ -53,12 +81,37 @@ provinces2  <- sp::merge(
   duplicateGeoms = TRUE
 )
 
+
+provinces2_females  <- sp::merge(
+  provinces,
+  ind_1_df_females,
+  by.x = "name",
+  by.y = "GEO",
+  sort = FALSE,
+  incomparables = NULL,
+  duplicateGeoms = TRUE
+)
+
+
+provinces2_males  <- sp::merge(
+  provinces,
+  ind_1_df_males,
+  by.x = "name",
+  by.y = "GEO",
+  sort = FALSE,
+  incomparables = NULL,
+  duplicateGeoms = TRUE
+)
+
+
 clear <- "#F2EFE9"
 lineColor <- "#000000"
 hoverColor <- "red"
 lineWeight <- 0.5
 
-pal <- colorNumeric(palette = 'Reds', c(max(ind_1_df$INCOME), min(ind_1_df$INCOME)), reverse = FALSE)
+pal1 <- colorNumeric(palette = 'Purples', c(max(ind_1_df$INCOME), min(ind_1_df$INCOME)), reverse = FALSE)
+pal2 <- colorNumeric(palette = 'Blues', c(max(ind_1_df_males$INCOME), min(ind_1_df_males$INCOME)), reverse = FALSE)
+pal3 <- colorNumeric(palette = 'Reds', c(max(ind_1_df_females$INCOME), min(ind_1_df_females$INCOME)), reverse = FALSE)
 
 provinces2 %>%
   leaflet() %>%
@@ -68,7 +121,7 @@ provinces2 %>%
   addTiles() %>%
   setView(-110.09, 62.7,  zoom = 3) %>%
   addPolygons(data = subset(provinces2, name %in% c("British Columbia", "Alberta", "Saskatchewan", "Manitoba", "Ontario", "Québec", "New Brunswick", "Prince Edward Island", "Nova Scotia", "Newfoundland and Labrador", "Yukon", "Northwest Territories", "Nunavut")),
-              fillColor = ~ pal(INCOME),
+              fillColor = ~ pal1(INCOME),
               fillOpacity = 0.5,
               stroke = TRUE,
               weight = lineWeight,
@@ -77,76 +130,54 @@ provinces2 %>%
               label=~stringr::str_c(
                 name,' ',
                 formatC(INCOME)),
-              labelOptions= labelOptions(direction = 'auto')) %>%
+              labelOptions= labelOptions(direction = 'auto'),
+              group = "Both") %>%
+
+  addPolygons(data = subset(provinces2_males, name %in% c("British Columbia", "Alberta", "Saskatchewan", "Manitoba", "Ontario", "Québec", "New Brunswick", "Prince Edward Island", "Nova Scotia", "Newfoundland and Labrador", "Yukon", "Northwest Territories", "Nunavut")),
+              fillColor = ~ pal2(INCOME),
+              fillOpacity = 0.5,
+              stroke = TRUE,
+              weight = lineWeight,
+              color = lineColor,
+              highlightOptions = highlightOptions(fillOpacity = 1, bringToFront = TRUE, sendToBack = TRUE),
+              label=~stringr::str_c(
+                name,' ',
+                formatC(INCOME)),
+              labelOptions= labelOptions(direction = 'auto'),
+              group = "Males") %>%
+
+
+  addPolygons(data = subset(provinces2_females, name %in% c("British Columbia", "Alberta", "Saskatchewan", "Manitoba", "Ontario", "Québec", "New Brunswick", "Prince Edward Island", "Nova Scotia", "Newfoundland and Labrador", "Yukon", "Northwest Territories", "Nunavut")),
+              fillColor = ~ pal3(INCOME),
+              fillOpacity = 0.5,
+              stroke = TRUE,
+              weight = lineWeight,
+              color = lineColor,
+              highlightOptions = highlightOptions(fillOpacity = 1, bringToFront = TRUE, sendToBack = TRUE),
+              label=~stringr::str_c(
+                name,' ',
+                formatC(INCOME)),
+              labelOptions= labelOptions(direction = 'auto'),
+              group = "Females") %>%
+
   # Add the checklist
-  addLegend(pal = pal,
+  addLayersControl(overlayGroups = c('Males', 'Females', 'Both'),
+                   options = layersControlOptions(collapsed = FALSE),
+                   position = 'topright') %>%
+  addLegend(pal = pal1,
             values = ind_1_df$INCOME,
             position = "bottomleft",
-            title = "Median Income",
-            labFormat = labelFormat(suffix = ""))
+            title = "Total Median Income",
+            labFormat = labelFormat(suffix = "", transform = function(x) sort(x, decreasing = FALSE))
+  ) %>%
 
-#-------------------------------------------------------------------------------
-
-ui <- bootstrapPage(
-  tags$style(type = "text/css", "html, body {width:100%;height:100%}"),
-  leafletOutput("map", width = "100%", height = "100%"),
-  absolutePanel(top = 10, right = 10,
-                style="z-index:500;", # legend over my map (map z = 400)
-                tags$h3("map"),
-                sliderInput("period", "Chronology",
-                            min(ind_1_df$YEAR),
-                            max(ind_1_df$YEAR),
-                            value = range(ind_1_df$YEAR),
-                            step = 1,
-                            sep = ""
-                )
+  addLayersControl(
+    position = "topleft",
+    baseGroups = c("Males", "Females", "Both"),
+    #overlayGroups = c("sfbdjsd", "sdbjskfdk"),
+    options = layersControlOptions(collapsed = FALSE)
   )
-)
-
-server <- function(input, output, session) {
-
-  # reactive filtering data from UI
-
-  reactive_data_chrono <- reactive({
-    df %>%
-      filter(year >= input$periode[1] & YEAR <= input$period[2])
-  })
 
 
-  # static backround map
-  output$map <- renderLeaflet({
-    leaflet(df) %>%
-      addTiles() %>%
-      fitBounds(~min(lng), ~min(lat), ~max(lng), ~max(lat))
-  })
 
-  # reactive circles map
-  observe({
-    leafletProxy("map", data = reactive_data_chrono()) %>%
-      clearShapes() %>%
-      addMarkers(lng=~lng,
-                 lat=~lat,
-                 layerId = ~id) # Assigning df id to layerid
-  })
-}
 
-shinyApp(ui, server)
-
-#-------------------------------------------------------------------------------
-
-#colour by income
-
-# Color by quantile
-map= leaflet(provinces)%>% addTiles()  %>% setView(-74.09, 45.7,  zoom = 3) %>%
-  addPolygons( stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("YlOrRd", ind_1_df$INCOME)(ind_1_df$INCOME) )
-map
-
-# Numeric palette
-map=leaflet(provinces)%>% addTiles()  %>% setView(-74.09, 45.7,  zoom = 3) %>%
-  addPolygons( stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorNumeric("YlOrRd", ind_1_df$INCOME)(ind_1_df$INCOME) )
-map
-
-# Bin
-map=leaflet(provinces)%>% addTiles()  %>% setView(-74.09, 45.7,  zoom = 3) %>%
-  addPolygons( stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorBin("YlOrRd", ind_1_df$INCOME)(ind_1_df$INCOME) )
-map
