@@ -81,7 +81,47 @@ provinces2  <- sp::merge(
   duplicateGeoms = TRUE
 )
 
+#-------------------------------------------------------------------------------
 
+# explore provinces2 data
+summary(provinces2$INCOME)
+# subset shp to include only zip codes in the top quartile of mean income
+provinces2_inc <- provinces2[!is.na(provinces2$INCOME) & provinces2$INCOME > 55917,]
+# map the boundaries of the zip codes in the top quartile of mean income
+provinces2_inc %>%
+  leaflet() %>%
+  addTiles() %>%
+  addPolygons()
+
+
+
+# create color palette with colorNumeric()
+nc_pal <- colorNumeric("YlGn", domain = provinces2_inc@data$INCOME)
+
+provinces2_inc %>%
+  leaflet() %>%
+  addTiles() %>%
+  # set boundary thickness to 1 and color polygons
+  addPolygons(weight = 1, color = ~nc_pal(INCOME),
+              # add labels that display mean income
+              label = ~paste0("Median Income: ", dollar(INCOME)),
+              # highlight polygons on hover
+              highlightOptions = highlightOptions(weight = 5, color = "white",
+                                                  bringToFront = TRUE))
+
+# Create a logged version of the nc_pal color palette
+nc_pal <- colorNumeric("YlGn", domain = log(high_inc@data$mean_income))
+
+# apply the nc_pal
+high_inc %>%
+  leaflet() %>%
+  #addProviderTiles("CartoDB") %>%
+  addPolygons(weight = 1, color = ~nc_pal(log(mean_income)), fillOpacity = 1,
+              label = ~paste0("Mean Income: ", dollar(mean_income)),
+              highlightOptions = highlightOptions(weight = 5, color = "white", bringToFront = TRUE))
+
+
+#-------------------------------------------------------------------------------
 provinces2_females  <- sp::merge(
   provinces,
   ind_1_df_females,

@@ -26,6 +26,9 @@ library(rgdal)
 library(stringr)
 library(mapview)
 library(shiny)
+library(htmltools)
+library(DT)
+library(plotly)
 
 #-------------------------------------------------------------------------------
 
