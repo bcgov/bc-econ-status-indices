@@ -1,0 +1,117 @@
+---
+title: "shiny app for individual median income"
+date: '2019-05-13'
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r script, results="hide", include=FALSE, echo = FALSE}
+
+## Source setup and function scripts
+if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
+```
+
+
+```{r ind data, include=FALSE, echo = FALSE}
+
+# Read and clean the data
+ind_1 <- fread(here("input-data", "1_IND.csv"))
+ind_1_df <- ind_1 %>%
+  filter(`level|of|geo|` == "11") %>%
+  select(`year`, `place|me|geo|`, `total|income|median|total`, `total|income|median|males`, `total|income|median|females`, `taxfilers|average|age`) %>%
+  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"QU<c9>BEC","Québec")) %>%
+  mutate(`place|me|geo|` = str_to_title(`place|me|geo|`)) %>%
+  rename("YEAR" =`year`, "GEO" = `place|me|geo|`, "MED_INCOME" = `total|income|median|total`, "MED_INCOME_MALES" = `total|income|median|males`, "MED_INCOME_FEMALES" = `total|income|median|females`, "AVG_AGE" = `taxfilers|average|age`)
+
+print(glimpse(ind_1_df))
+
+```
+
+
+```{r ui, eval = TRUE, echo = FALSE}
+
+# build shiny app skeleton
+
+ui <- fluidPage(
+
+  # Sidebar layout with a input and output definitions
+  sidebarLayout(
+
+    # Inputs
+    sidebarPanel(
+      textInput("title", "Title", "Individual's Income Distribution"),
+
+      # Select variable for x-axis
+      selectInput(inputId = "x",
+                  label = "X-axis:",
+                  choices = "GEO",
+                  selected = "British Columbia"),
+
+      # Select variable for y-axis
+      selectInput(inputId = "y",
+                  label = "Y-axis:",
+                  choices = c("MED_INCOME", "MED_INCOME_MALES", "MED_INCOME_FEMALES", "AVG_AGE"),
+                  selected = "MED_INCOME"),
+      # Add a slider selector for years to filter
+      sliderInput("years", "Years",
+                  min(ind_1_df$YEAR), max(ind_1_df$YEAR),
+                  value = c(2000, 2015),
+                  step = 1)
+    ),
+
+    # Outputs
+    mainPanel(
+      plotOutput(outputId = "boxplot",  hover = "plot_hover", width = 800, height = 400),
+      dataTableOutput(outputId = "incometable")
+    )
+  )
+)
+
+```
+
+
+```{r server, eval = TRUE, echo = FALSE}
+
+server <- function(input, output) {
+    # Create scatterplot object the plotOutput function is expecting
+    output$boxplot <- renderPlot({
+
+    data <- subset(ind_1_df,
+                     YEAR >= input$years[1] & YEAR <= input$years[2])
+
+
+    ggplot(data = data, aes_string(x = input$x, y = input$y)) +
+      geom_boxplot(fill = "#4271AE", colour = "#1F3552",
+                   alpha = 0.7) +
+      theme(axis.text.x = element_text(angle = 90))
+    })
+
+    # Print data table
+    output$incometable <- DT::renderDataTable({
+
+      data <- subset(ind_1_df,
+                     YEAR >= input$years[1] & YEAR <= input$years[2])
+
+      DT::datatable(data = data,
+                    options = list(pageLength = 13),
+                                   rownames = FALSE)
+
+    })
+
+  }
+
+```
+
+```{r shiny app, eval = TRUE, echo = FALSE}
+
+# Create a Shiny app object
+shinyApp(ui = ui, server = server)
+```
+
+
+
