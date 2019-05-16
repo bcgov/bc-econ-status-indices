@@ -117,7 +117,36 @@ ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = f
 
 
 #-------------------------------------------------------------------------------
+
 # Load the tabplot package: library(tabplot)
 # tidy table before tableplot
 tableplot(ind_1_plot)
+
+#-------------------------------------------------------------------------------
+
+# pie chart for number of taxfilers in geo areas of interest (i.e. 6, 9, 21, 61)
+# Wrangle data into form we want.
+pie_plot <- ind_1_plot %>%
+  mutate(`level|of|geo|` = ifelse(`level|of|geo|` %in% c('6', '9', '21', '61'), `level|of|geo|`, 'other')) %>%
+  group_by(`level|of|geo|` ) %>%
+  summarise(`taxfilers|#|` = sum(`taxfilers|#|`)) %>%
+  setnames(c("geos", "taxfilers"))
+
+ggplot(pie_plot, aes(x = 1, y = taxfilers, fill = geos)) +
+  # Use a column geometry.
+  geom_col() +
+  # Change coordinate system to polar and set theta to 'y'.
+  coord_polar(theta = "y") +
+  # Clean up the background with theme_void and give it a proper title with ggtitle.
+  #theme_void() +
+  ggtitle('Proportion of taxfilers in BC geos')
+
+#-------------------------------------------------------------------------------
+
+# tidy table before tableplot
+tableplot(pie_plot)
+
+
+
+
 
