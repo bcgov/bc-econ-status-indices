@@ -29,6 +29,7 @@ library(shiny)
 library(htmltools)
 library(DT)
 library(plotly)
+library(ggridges)
 
 #-------------------------------------------------------------------------------
 

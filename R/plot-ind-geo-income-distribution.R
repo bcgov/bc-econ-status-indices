@@ -25,17 +25,19 @@ hist(ind_1$`total|income|median|total`, xlab = "total median income", ylab = "fr
 # Set up a two-by-two plot array for total median income
 par(mfrow = c(2, 2))
 
-# Plot the raw total median income
-plot(ind_1$`total|income|median|total`, col = "blue", xlab = "index", ylab = "total median income", main = "Scatterplot")
-
 # Plot the normalized histogram of the total median income
 truehist(ind_1$`total|income|median|total`, xlab = "index", ylab = "total median income", main = "Histogram")
 
 # Plot the density of the total median income
 plot(density(ind_1$`total|income|median|total`), xlab = "index", ylab = "total median income", main = "Density plot")
 
-# Construct the normal (quantile-quantile) QQ-plot of the total median income
-qqnorm(ind_1$`total|income|median|total`, xlab = "index", ylab = "total median income", main = "QQ-plot")
+
+ggplot(ind_1, aes(x=`total|income|median|total`)) +
+  geom_density(bw = 1.5, fill = 'steelblue', alpha = 0.7) +
+  # add a rug plot using geom_rug to see individual datapoints, set alpha to 0.5.
+  geom_rug(alpha = 0.5) +
+  labs(title = 'Total Median Income Distribution', subtitle = "Gaussian kernel SD = 1.5")
+
 
 #-------------------------------------------------------------------------------
 
@@ -43,29 +45,21 @@ qqnorm(ind_1$`total|income|median|total`, xlab = "index", ylab = "total median i
 par(mfrow = c(2, 2))
 
 # Plot the normalized histogram of age distribution
-plot(ind_1$`all|persons|average|age`, col = "blue", xlab = "index", ylab = "Taxfiler age distribution", main = "Scatterplot")
-
-# Plot the normalized histogram of age distribution
 truehist(ind_1$`all|persons|average|age`, xlab = "index", ylab = "Taxfiler age distribution", main = "Histogram")
 
 # Plot the density of age distribution
 plot(density(ind_1$`all|persons|average|age`), xlab = "index", ylab = "Taxfiler age distribution", main = "Density plot")
 
-# Construct the normal (quantile-quantile) QQ-plot of age distribution
-qqnorm(ind_1$`all|persons|average|age`, xlab = "index", ylab = "Taxfiler age distribution", main = "QQ-plot")
-
 #-------------------------------------------------------------------------------
-# Load the tabplot package: library(tabplot)
-# tidy table before tableplot
-tableplot(ind_1)
 
-#-------------------------------------------------------------------------------
 ## Density exploration of data
 # density plots for all geographical levels based on total median income
 ggplot(ind_1) + geom_density(aes(x = `total|income|median|total`, color = year)) +
   facet_wrap(~ `level|of|geo|`, scales = "free") +
   labs(title = "Density plots for geo levels", xlab = "Total median income")
+
 #-------------------------------------------------------------------------------
+
 ## Boxplot exploration of data
 # all geo levels boxplot
 
@@ -120,3 +114,10 @@ ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = f
   scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
   labs(title = "Taxfilers Distribution", subtitle = "based on geo level", y = "No. of Taxfilers") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+#-------------------------------------------------------------------------------
+# Load the tabplot package: library(tabplot)
+# tidy table before tableplot
+tableplot(ind_1_plot)
+
