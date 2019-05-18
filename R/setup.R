@@ -12,27 +12,13 @@
 
 
 # install/load packages and dependencies
-library(here)
-library(data.table)
-library(dplyr)
-library(readr)
-library(ggplot2)
-library(lattice)
-library(MASS)
-library(tabplot)
-library(bcdata)
-library(leaflet)
-library(rgdal)
-library(stringr)
-library(mapview)
-library(shiny)
-library(htmltools)
-library(DT)
-library(plotly)
-library(ggridges)
 
+packages <- c("here", "data.table", "tidyverse", "tabplot",
+              "leaflet", "rgdal", "bcdata", "ggridges", "plotly",
+              "shiny", "lattice", "mapview", "htmltools", "DT")
+
+lapply(packages, library, character.only = TRUE)
 #-------------------------------------------------------------------------------
 
-## Object to source setup script
-
+# Object to source setup script
 .setup_sourced <- TRUE

@@ -1,0 +1,213 @@
+---
+title: "Taxdata Tables for Index Generation"
+date: '2019-05-17'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r script, results="hide", include=FALSE, echo = FALSE}
+
+## Source setup and function scripts
+if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
+```
+
+## Individual Taxdata Tables:
+
+### Table I-01
+This table holds information about Taxfilers and dependents, summary table, income and demographics of individuals.
+ 
+```{r table 1, eval=FALSE}
+ind_1 <- fread(here("input-data", "1_IND.csv"))
+
+Fields relevant to index:
+  
+postal|area|
+year
+cityid|
+level|of|geo|
+place|me|geo|
+taxfilers|#|
+total|income|median|males
+total|income|median|females
+total|income|median|total
+
+```
+
+
+### Table I-02
+This table includes information on taxfilers and dependents by sex, marital status and age groups. 
+There are **no** fields for index generation, directly.
+
+```{r table 2, eval=FALSE}
+ind_2 <- fread(here("input-data", "2_IND.csv"))
+```
+
+### Table I-3A-B-C
+These tables includes information on male (3A) and female (3B) and combined (3C) taxfilers and dependents by single years of age. 
+There are **no** fields for index generation, directly.
+
+```{r table 3, eval=FALSE}
+ind_3A <- fread(here("input-data", "3A_IND.csv"))
+ind_3B <- fread(here("input-data", "3B_IND.csv"))
+ind_3C <- fread(here("input-data", "3C_IND.csv"))
+```
+
+
+### Table I-04 
+This table includes information on taxfilers and dependents with income by source of income.
+There are **no** fields for index generation, directly.
+
+```{r table 4, eval=FALSE}
+ind_4 <- fread(here("input-data", "4_IND.csv"))
+```
+
+### Table I-5A-B-C
+These tables include male, female, and all taxfilers and dependents with income by total Income and age groups.
+The breakdowns for age and income can help with index generation.
+
+```{r table 5, eval=FALSE}
+ind_5A <- fread(here("input-data", "5A_IND.csv"))
+ind_5B <- fread(here("input-data", "5B_IND.csv"))
+ind_5C <- fread(here("input-data", "5C_IND.csv"))
+
+Fields of interest include:
+  
+postal|area|	
+cityid|	
+level|of|geo|	
+place|me|
+  ## taxfilers in the brackets below:
+  all|males|with|income|by|total|income|0-24|years|<$5k
+	all|males|with|income|by|total|income|0-24|years|$5k+	   
+	all|males|with|income|by|total|income|0-24|years|$10k+
+	all|males|with|income|by|total|income|0-24|years|$15k+
+	all|males|with|income|by|total|income|0-24|years|$20k+
+	all|males|with|income|by|total|income|0-24|years|$25k+
+	all|males|with|income|by|total|income|0-24|years|$35k+
+	all|males|with|income|by|total|income|0-24|years|$50k+
+	all|males|with|income|by|total|income|0-24|years|$75k+
+	all|males|with|income|by|total|income|0-24|years|$100k+
+	all|males|with|income|by|total|income|0-24|years|$150k+
+	all|males|with|income|by|total|income|0-24|years|$200k+
+	all|males|with|income|by|total|income|0-24|years|$250k+
+	all|males|with|income|by|total|income|0-24|years|total
+
+Other age brackets include:
+  25-34, 35-44, 45-54, 55-64, 65-74, 75+
+
+This information also exist for females and both genders combined.
+```
+
+
+### Table I-06 
+Taxfilers and dependents with income by sex, income taxes, selected deductions and benefits.
+
+```{r table 6, eval=FALSE}
+ind_6 <- fread(here("input-data", "6_IND.csv"))
+
+postal|area|
+year	
+cityid|	
+level|of|geo|	
+place|me|
+total|income|$'000|males
+total|income|$'000|females
+total|income|$'000|total
+```
+
+### Table I-7A-B-C
+This table includes information on male, female, and all taxfilers and dependents with income by after-tax income and age groups
+
+```{r table 7, eval=FALSE}
+ind_7 <- fread(here("input-data", "7_IND.csv"))
+
+postal|area|	
+year	
+cityid|	
+level|of|geo|	
+place|me|
+    ## taxfilers in the brackets below:
+  all|males|with|after-tax|income|by|total|income|0-24|years|<$5k
+  all|males|with|after-tax|income|by|total|income|0-24|years|$5k+	
+  all|males|with|after-tax|income|by|total|income|0-24|years|$10k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$15k+	
+  all|males|with|after-tax|income|by|total|income|0-24|years|$20k+  
+  all|males|with|after-tax|income|by|total|income|0-24|years|$25k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$35k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$50k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$75k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$100k+   
+  all|males|with|after-tax|income|by|total|income|0-24|years|$150k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$200k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$250k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|total
+  
+Other age brackets include:
+  25-34, 35-44, 45-54, 55-64, 65-74, 75+
+
+This information also exist for females and both genders combined.
+
+```
+
+
+### Table I-08 
+This table includes information on taxfilers and dependents with income by income taxes and after-tax income, sex and age groups.
+
+```{r table 8, eval=FALSE}
+ind_8 <- fread(here("input-data", "8_IND.csv"))
+
+postal|area|
+year	
+cityid|		
+postal|walk|	
+level|of|geo|	
+place|me|
+  ## taxfilers in the brackets below:
+  all|males|total|income|#|0-24|years	
+  all|males|total|income|#|$'000|0-24|years
+
+Other age brackets include:
+  25-34, 35-44, 45-54, 55-64, 65+
+
+This information also exist for females and both genders combined.
+```
+
+### Table I-09 
+Economic dependency profile of individuals
+
+```{r table 9, eval=FALSE}
+ind_9 <- fread(here("input-data", "9_IND.csv"))
+```
+
+### Table I-10 
+Labour income profile of individuals
+
+```{r table 10, eval=FALSE}
+ind_10 <- fread(here("input-data", "10_IND.csv"))
+```
+
+### Table I-11 
+Taxfilers and dependents 15 years of age and over with labour income by sex and age groups
+
+```{r table 11, eval=FALSE}
+ind_11 <- fread(here("input-data", "11_IND.csv"))
+```
+
+### Table I-12 
+Taxfilers and dependents 15 years of age and over receiving employment insurance by age groups and sex
+
+```{r table 12, eval=FALSE}
+ind_12 <- fread(here("input-data", "12_IND.csv"))
+```
+
+### Table I-13 
+After-tax low income status of tax filers and dependents, census family low income measure, for couple and lone parent families by family composition
+
+```{r table 13, eval=FALSE}
+ind_13 <- fread(here("input-data", "13_IND.csv"))
+```
+
+
