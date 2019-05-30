@@ -18,8 +18,16 @@ if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 
 # read in the csv
 ind_1 <- fread(here("input-data", "1_IND.csv"))
+print(glimpse(ind_1))
+
 summary(ind_1$`total|income|median|total`)
 hist(ind_1$`total|income|median|total`, xlab = "total median income", ylab = "frequency", main = "histogram")
+
+
+ind_1 %>%
+  filter(`place|me|geo|` == "BRITISH COLUMBIA") %>%
+  select(`total|income|median|total`) %>%
+  quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
 
 #-------------------------------------------------------------------------------
 # Set up a two-by-two plot array for total median income
