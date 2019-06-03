@@ -1,0 +1,13 @@
+name: Income-dist-ind-prov
+title:
+username:
+account: nnabavi
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 927662
+bundleId: 2081822
+url: https://nnabavi.shinyapps.io/Income-dist-ind-prov/
+when: 1557790081.09271
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: bcdata-integration.R|income-distribution.R|income-provincial-map.R

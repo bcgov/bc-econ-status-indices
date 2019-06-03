@@ -43,14 +43,14 @@ ui <- fluidPage(
       # Select variable for x-axis
       selectInput(inputId = "x",
                   label = "X-axis:",
-                  choices = "GEO",
-                  selected = "9"),
+                  choices = "GEO"),
+                  #selected = "21"),
 
       # Select variable for y-axis
       selectInput(inputId = "y",
                   label = "Y-axis:",
-                  choices = c("TAXFILERS", "MED_INCOME"),
-                  selected = "TAXFILERS"),
+                  choices = c("TAXFILERS", "MED_INCOME")),
+                  #selected = "TAXFILERS"),
       # Add a slider selector for years to filter
       sliderInput("years", "Years",
                   min(ind_1_bc$YEAR), max(ind_1_bc$YEAR),
@@ -76,8 +76,7 @@ server <- function(input, output) {
     data <- subset(ind_1_bc,
                    YEAR >= input$years[1] & YEAR <= input$years[2])
 
-
-    ggplot(data = data, aes_string(x = input$x, y = input$y)) +
+    ggplot(data = data, aes_string(x = input$x, y = input$y, group = input$x)) +
       geom_boxplot(fill = "#4271AE", colour = "#1F3552",
                    alpha = 0.7) +
       theme(axis.text.x = element_text(angle = 90))
