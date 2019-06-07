@@ -13,9 +13,9 @@
 
 # install/load packages and dependencies
 
-packages <- c("here", "data.table", "tidyverse", "tabplot",
-              "leaflet", "rgdal", "bcdata", "ggridges", "plotly",
-              "shiny", "lattice", "mapview", "htmltools", "DT")
+packages <- c("here", "data.table", "tidyverse", "tabplot", "RColorBrewer",
+              "leaflet", "rgdal", "bcdata", "ggridges", "plotly", "ggplot2",
+              "shiny", "lattice", "mapview", "htmltools", "DT", "sf", "bcmaps")
 
 lapply(packages, library, character.only = TRUE)
 #-------------------------------------------------------------------------------

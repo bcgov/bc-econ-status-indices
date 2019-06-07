@@ -19,16 +19,6 @@ knitr::opts_chunk$set(echo = TRUE)
 if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 ```
 
-
-- Load the data: 
-
-```{r data.table, eval = TRUE}
-## load tax data table
-ind_1 <- fread(here("input-data", "1_IND.csv"))
-```
-
-
-
 ### exploring levels of geography:
 
 Levels of geography in taxdata include:    
@@ -47,36 +37,4 @@ Levels of geography in taxdata include:
 - 42 CA: ([CENSUS AGGLOMERATION](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo005-eng.cfm))   
 - 61 CT: ([CENSUS TRACT](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo013-eng.cfm))   
 
-### Data Catalogue queries for geography levels:
 
-```{r census, eval = FALSE}
-# explore data catalogue using keywords
-bcdata::bcdc_browse()
-bcdata::bcdc_search("census")
-
-```
-
-- load relevant data from the catalogue: 
-```{r bcdc, echo = TRUE}
-
-# Current Census Subdivision Boundaries
-CSD <- bcdata::bcdc_get_data("4c5618c6-38dd-4a62-a3de-9408b4974bb6")
-mapview(CSD)
-
-# Census Tracts
-CT <- bcdata::bcdc_get_data("539aae5b-12f6-4934-9592-9b27acc827f8")
-mapview(CT)
-
-# Current Census Metropolitan Areas (other, wms, kml)
-CMA <- bcdata::bcdc_get_data("a6fb34b7-0937-4718-8f1f-43dba2c0f407")
-mapview(CMA)
-
-# Current Census Division Boundaries (other, wms, kml)
-CD <- bcdata::bcdc_get_data("ef17918a-597a-4012-8534-f8e71d8735b3")
-mapview(CD)
-
-# Current Census Economic Regions (other, wms, kml)
-ER <- bcdata::bcdc_get_data("1aebc451-a41c-496f-8b18-6f414cde93b7")
-mapview(ER)
-
-```

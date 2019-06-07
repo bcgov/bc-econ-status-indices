@@ -77,6 +77,7 @@ server <- function(input, output) {
                    YEAR >= input$years[1] & YEAR <= input$years[2])
 
     ggplot(data = data, aes_string(x = input$x, y = input$y, group = input$x)) +
+      #scale_y_log10() +
       geom_boxplot(fill = "#4271AE", colour = "#1F3552",
                    alpha = 0.7) +
       theme(axis.text.x = element_text(angle = 90))
