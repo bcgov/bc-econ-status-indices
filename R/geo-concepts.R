@@ -12,16 +12,18 @@
 
 
 if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
-pal_ct <- colorRampPalette(brewer.pal(9, "BrBG"))
-pal_cd <- colorRampPalette(brewer.pal(9, "YlOrBr"))
-pal_csd <- colorRampPalette(brewer.pal(9, "Set3"))
-pal_fsa <- colorRampPalette(brewer.pal(9, "Pastel1"))
 
 #-------------------------------------------------------------------------------
 
 # download shp files from statscan
 ## https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm
 ## e.g. for shp files for census tracts, download: https://www12.statcan.gc.ca/census-recensement/alternative_alternatif.cfm?l=eng&dispext=zip&teng=lct_000a16a_e.zip&k=%20%20%20%20%207190&loc=http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lct_000a16a_e.zip
+
+## set the map colors:
+pal_ct <- colorRampPalette(brewer.pal(9, "BrBG"))
+pal_cd <- colorRampPalette(brewer.pal(9, "YlOrBr"))
+pal_csd <- colorRampPalette(brewer.pal(9, "Set3"))
+pal_fsa <- colorRampPalette(brewer.pal(9, "Pastel1"))
 
 # exploring 2016 census tracts (ct):
 
@@ -97,6 +99,7 @@ ggplot2::ggplot() +
 
 # Intersection ------------------------------------------------------------
 
+
 mapview(list(ct, cd, csd, fsa))
 
 #-------------------------------------------------------------------------------
@@ -135,3 +138,6 @@ mapview(CD)
 # Current Census Economic Regions (other, wms, kml)
 ER <- bcdata::bcdc_get_data("1aebc451-a41c-496f-8b18-6f414cde93b7")
 mapview(ER)
+
+
+

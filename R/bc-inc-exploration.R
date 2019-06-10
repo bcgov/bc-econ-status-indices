@@ -154,7 +154,19 @@ ggplot(pie_plot, aes(x = 1, y = taxfilers, fill = geos)) +
 # tidy table before tableplot
 tableplot(pie_plot)
 
+#-------------------------------------------------------------------------------
 
+# read in the PCCF csv file
+PCCF <- fread(here("input-data", "PCCF_2013_CT_conversion.csv"))
+print(glimpse(PCCF))
 
+ind_1_CT <- ind_1 %>%
+  filter(`level|of|geo|` == 61) %>%
+  select(`postal|area|`) %>%
+  mutate(`postal|area|` = round(as.numeric(`postal|area|`), 2))
 
+colnames(ind_1_CT)[1] <- "`postal|area|`"
 
+ind_1$CT <- left_join(ind_1, ind_1_CT, by = `postal|area|`)
+
+common <- intersect(PCCF$CT, ind_1_CT$`postal|area|`)
