@@ -139,5 +139,25 @@ mapview(CD)
 ER <- bcdata::bcdc_get_data("1aebc451-a41c-496f-8b18-6f414cde93b7")
 mapview(ER)
 
+#-------------------------------------------------------------------------------
 
+# exploring pccf data
 
+pccf <- fread(here("input-data", "PCCF_2013_CT_conversion.csv"))
+ind_1 <- fread(here("input-data", "1_IND.csv"))
+
+pccf_subset <- pccf %>%
+  dplyr::select(PostalCode, CT)
+
+ind_1_subset <- ind_1 %>%
+  dplyr::select(`postal|area|`, `level|of|geo|`) %>%
+  dplyr::filter(`level|of|geo|` == 61)
+
+ind <- ind_1_subset %>%
+  dplyr::mutate(CT = round(as.numeric(`postal|area|`), 2))
+
+ind_pccf <- inner_join(ind, pccf_subset, by = "CT")
+
+ind_pccf_ind <- left_join(ind_1, ind_pccf, by = "postal|area|")
+
+duplicated(ind_pccf_ind$`postal|area|`[(ind_pccf_ind$PostalCode %in% ind_pccf_ind$`postal|area|`)])

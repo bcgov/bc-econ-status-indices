@@ -23,7 +23,7 @@ print(glimpse(ind_1))
 summary(ind_1$`total|income|median|total`)
 hist(ind_1$`total|income|median|total`, xlab = "total median income", ylab = "frequency", main = "histogram")
 
-
+# calculate quintile range of total median income across all years
 ind_1 %>%
   filter(`place|me|geo|` == "BRITISH COLUMBIA") %>%
   select(`total|income|median|total`) %>%
@@ -39,7 +39,7 @@ truehist(ind_1$`total|income|median|total`, xlab = "index", ylab = "total median
 # Plot the density of the total median income
 plot(density(ind_1$`total|income|median|total`), xlab = "index", ylab = "total median income", main = "Density plot")
 
-
+# Plot the density plot of the total median income across all years from ind_1 data table
 ggplot(ind_1, aes(x=`total|income|median|total`)) +
   geom_density(bw = 1.5, fill = 'steelblue', alpha = 0.7) +
   # add a rug plot using geom_rug to see individual datapoints, set alpha to 0.5.
@@ -153,20 +153,3 @@ ggplot(pie_plot, aes(x = 1, y = taxfilers, fill = geos)) +
 
 # tidy table before tableplot
 tableplot(pie_plot)
-
-#-------------------------------------------------------------------------------
-
-# read in the PCCF csv file
-PCCF <- fread(here("input-data", "PCCF_2013_CT_conversion.csv"))
-print(glimpse(PCCF))
-
-ind_1_CT <- ind_1 %>%
-  filter(`level|of|geo|` == 61) %>%
-  select(`postal|area|`) %>%
-  mutate(`postal|area|` = round(as.numeric(`postal|area|`), 2))
-
-colnames(ind_1_CT)[1] <- "`postal|area|`"
-
-ind_1$CT <- left_join(ind_1, ind_1_CT, by = `postal|area|`)
-
-common <- intersect(PCCF$CT, ind_1_CT$`postal|area|`)
