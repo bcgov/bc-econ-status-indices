@@ -68,7 +68,7 @@ ggplot(ind_1) + geom_density(aes(x = `total|income|median|total`, color = year))
 
 #-------------------------------------------------------------------------------
 
-## Boxplot exploration of data
+## Boxplot exploration of data geographies
 # all geo levels boxplot
 
 ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`)) +
@@ -153,3 +153,30 @@ ggplot(pie_plot, aes(x = 1, y = taxfilers, fill = geos)) +
 
 # tidy table before tableplot
 tableplot(pie_plot)
+
+#-------------------------------------------------------------------------------
+
+# income index for geo level 61
+
+# year 2000
+ind_1 %>%
+  filter(`level|of|geo|` == 61) %>%
+  filter(`year` == 2000) %>%
+  select(`total|income|median|total`) %>%
+  quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
+
+# year 2015
+ind_1 %>%
+  filter(`level|of|geo|` == 61) %>%
+  filter(`year` == 2015) %>%
+  select(`total|income|median|total`) %>%
+  quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
+
+ind_1 %>%
+ssddf  filter(`level|of|geo|` == 61) %>%
+  summarize(Qs = quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE))
+
+
+            select(`total|income|median|total`) %>%
+%>%
+  mutate(Qs =  quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE))

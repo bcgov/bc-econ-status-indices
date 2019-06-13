@@ -96,9 +96,7 @@ ggplot2::ggplot() +
   geom_sf(data = fsa, aes(fill = CFSAUID))
 
 
-
 # Intersection ------------------------------------------------------------
-
 
 mapview(list(ct, cd, csd, fsa))
 
@@ -141,23 +139,35 @@ mapview(ER)
 
 #-------------------------------------------------------------------------------
 
-# exploring pccf data
+# exploring pccf data to convert CTs to postal codes
 
 pccf <- fread(here("input-data", "PCCF_2013_CT_conversion.csv"))
 ind_1 <- fread(here("input-data", "1_IND.csv"))
 
-pccf_subset <- pccf %>%
-  dplyr::select(PostalCode, CT)
+## statcan data
+# check whether there are duplicated postal areas in ind_1 table per year
+ind_1_ct <- ind_1 %>%
+  dplyr::filter(`level|of|geo|` == 61) %>%
+  dplyr::filter(`year` == 2000)
+duplicated(ind_1_ct$`postal|area|`) # no duplicates!
 
+# create a new column for census tracts
 ind_1_subset <- ind_1 %>%
-  dplyr::select(`postal|area|`, `level|of|geo|`) %>%
-  dplyr::filter(`level|of|geo|` == 61)
+  dplyr::filter(`level|of|geo|` == 61) %>%
+  dplyr::mutate(CT = format(round(as.numeric(`postal|area|`, 2)), format = "f"))
 
-ind <- ind_1_subset %>%
-  dplyr::mutate(CT = round(as.numeric(`postal|area|`), 2))
+## pccf data
+# read pccf and select CT geos as character type
+pccf_subset <- pccf %>%
+  dplyr::select(PostalCode, CT) %>%
+  dplyr::mutate(CT = as.character(CT))
+duplicated(pccf_subset$CT)
+duplicated(pccf_subset$PostalCode)
 
-ind_pccf <- inner_join(ind, pccf_subset, by = "CT")
+# combine pccf and ind_1 tables based on CTs to get postal codes
+ind_pccf <- inner_join(ind_1_subset, pccf_subset, by = "CT")
 
+# combine file to get CTs for all ind_1 table
 ind_pccf_ind <- left_join(ind_1, ind_pccf, by = "postal|area|")
 
-duplicated(ind_pccf_ind$`postal|area|`[(ind_pccf_ind$PostalCode %in% ind_pccf_ind$`postal|area|`)])
+
