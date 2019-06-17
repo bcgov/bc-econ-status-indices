@@ -113,7 +113,8 @@ ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, group = `l
 # boxplot removing Canada and provincial level of geo's based on years
 ind_1_plot <- ind_1 %>%
   select(`taxfilers|#|`,`level|of|geo|`, `year`) %>%
-  filter(ind_1$`level|of|geo|` != 11 & ind_1$`level|of|geo|` != 12)
+  filter(ind_1$`level|of|geo|` != 11 & ind_1$`level|of|geo|` != 12) %>%
+  filter(`year` == 2000)
 
 ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = factor(`year`))) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "21", "31", "41", "42", "51", "61"),
@@ -156,7 +157,7 @@ tableplot(pie_plot)
 
 #-------------------------------------------------------------------------------
 
-# income index for geo level 61
+# income index for geo level 61 (census tracts)
 
 # year 2000
 ind_1 %>%
@@ -172,11 +173,64 @@ ind_1 %>%
   select(`total|income|median|total`) %>%
   quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
 
+# quintile range for geo level 61 for all years
+q_61_all <- ind_1 %>%
+  select(`year`, `total|income|median|total`, `level|of|geo|`) %>%
+  group_by(`year`) %>%
+  filter(`level|of|geo|` == 61) %>%
+  mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
+  ungroup()
+
+# quintile range for geo level 61 for year of 2000
+
+q_61_2000 <- ind_1 %>%
+  select(`year`, `total|income|median|total`, `level|of|geo|`) %>%
+  filter(`year` == 2000) %>%
+  filter(`level|of|geo|` == 61) %>%
+  mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
+  ungroup()
+
+# compare quintiles for all years and for 2000 to test whether grouping works
+q_61_all$UQs %in% q_61_2000$UQs
+
+#-------------------------------------------------------------------------------
+
+# income index for geo level 9 (rural areas)
+
+# year 2000
 ind_1 %>%
-ssddf  filter(`level|of|geo|` == 61) %>%
-  summarize(Qs = quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE))
+  filter(`level|of|geo|` == 9) %>%
+  filter(`year` == 2000) %>%
+  select(`total|income|median|total`) %>%
+  quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
 
 
-            select(`total|income|median|total`) %>%
-%>%
-  mutate(Qs =  quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE))
+# year 2015
+ind_1 %>%
+  filter(`level|of|geo|` == 9) %>%
+  filter(`year` == 2015) %>%
+  select(`total|income|median|total`) %>%
+  quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
+
+# quintile range for geo level 9 for all years
+q_9_all <- ind_1 %>%
+  select(`year`, `total|income|median|total`, `level|of|geo|`) %>%
+  group_by(`year`) %>%
+  filter(`level|of|geo|` == 9) %>%
+  mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
+  ungroup()
+
+# quintile range for geo level 9 for year of 2000
+
+q_9_2000 <- ind_1 %>%
+  select(`year`, `total|income|median|total`, `level|of|geo|`) %>%
+  filter(`year` == 2000) %>%
+  filter(`level|of|geo|` == 9) %>%
+  mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
+  ungroup()
+
+# compare quintiles for all years and for 2000 to test whether grouping works
+q_9_all$UQs %in% q_9_2000$UQs
+
+#-------------------------------------------------------------------------------
+

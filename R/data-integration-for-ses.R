@@ -1,0 +1,38 @@
+# Copyright 2019 Province of British Columbia
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and limitations under the License.
+
+## Source setup and function scripts
+if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
+
+#-------------------------------------------------------------------------------
+
+# read in synthetic data
+tax <- fread(here("input-data", "1_IND.csv"))
+dip <- fread(here("input-data", "synthetic-dip-data.csv"))
+
+
+# cleanup the tax data
+clean_taxdata <- tax %>%
+  filter(`level|of|geo|` == 61) %>%
+  select(`level|of|geo|`, `total|income|median|total`, `year`) %>%
+  mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
+  mutate(geo = `level|of|geo|`)
+
+
+# cleanup the dip data
+extract_dipdata <- dip %>%
+  mutate()
+
+
+
+# integrate the two datasets
+integrate_dipdata <- merge(clean_taxdata, extract_dipdata, by = c("geo", "year"))
