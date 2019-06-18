@@ -36,7 +36,7 @@ clean_taxdata <- tax %>%
 clean_dipdata <- dip %>%
   mutate(date = as.Date(date)) %>%
   mutate(year = as.numeric(format(date, "%Y"))) %>%
-  select(studyid, year, geo)
+  select(studyid, year, geo, marital, age, edu)
 
 
 # integrate the two datasets
