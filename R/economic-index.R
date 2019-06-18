@@ -30,7 +30,8 @@ clean_taxdata <- tax %>%
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   mutate(year = as.numeric(`year`)) %>%
   mutate(geo = `level|of|geo|`) %>%
-  mutate(pc = as.factor(`postal|area|`))
+  mutate(pc = as.factor(`postal|area|`)) %>%
+  select(UQs, year, geo, pc)
 
 
 # cleanup the dip data
