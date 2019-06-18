@@ -16,8 +16,11 @@ if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 #-------------------------------------------------------------------------------
 
 # read in synthetic data
-tax <- fread(here("input-data", "1_IND.csv"))
-dip <- fread(here("input-data", "synthetic-dip-data.csv"))
+working <- setwd("~/bc-econ-status-indices/input-data")
+list.files(working)
+
+tax <- fread("1_IND.csv")
+dip <- read.csv("synthetic-dip-data.csv", nrows=2000)
 
 
 # cleanup the tax data
@@ -25,14 +28,16 @@ clean_taxdata <- tax %>%
   filter(`level|of|geo|` == 61) %>%
   select(`level|of|geo|`, `total|income|median|total`, `year`) %>%
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
+  mutate(year = as.numeric(`year`)) %>%
   mutate(geo = `level|of|geo|`)
 
 
 # cleanup the dip data
-extract_dipdata <- dip %>%
-  mutate()
-
+clean_dipdata <- dip %>%
+  mutate(date = as.Date(date)) %>%
+  mutate(year = as.numeric(format(date, "%Y"))) %>%
+  select(studyid, year, geo)
 
 
 # integrate the two datasets
-integrate_dipdata <- merge(clean_taxdata, extract_dipdata, by = c("geo", "year"))
+integrate_dipdata <- inner_join(clean_taxdata, clean_dipdata, by = c("geo", "year"))
