@@ -20,24 +20,26 @@ working <- setwd("~/bc-econ-status-indices/input-data")
 list.files(working)
 
 tax <- fread("1_IND.csv")
-dip <- read.csv("synthetic-dip-data.csv", nrows=2000)
+dip <- read.csv("synthetic-dip-data.csv")
 
 
 # cleanup the tax data
 clean_taxdata <- tax %>%
   filter(`level|of|geo|` == 61) %>%
-  select(`level|of|geo|`, `total|income|median|total`, `year`) %>%
+  select(`level|of|geo|`, `total|income|median|total`, `year`, `postal|area|`) %>%
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   mutate(year = as.numeric(`year`)) %>%
-  mutate(geo = `level|of|geo|`)
+  mutate(geo = `level|of|geo|`) %>%
+  mutate(pc = as.factor(`postal|area|`))
 
 
 # cleanup the dip data
 clean_dipdata <- dip %>%
   mutate(date = as.Date(date)) %>%
   mutate(year = as.numeric(format(date, "%Y"))) %>%
-  select(studyid, year, geo, marital, age, edu)
+  mutate(pc = as.factor(pc)) %>%
+  select(studyid, pc, year, geo)
 
 
 # integrate the two datasets
-integrate_dipdata <- inner_join(clean_taxdata, clean_dipdata, by = c("geo", "year"))
+integrate_dipdata <- inner_join(clean_taxdata, clean_dipdata, by = c("geo", "year", "pc"))
