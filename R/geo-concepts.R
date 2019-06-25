@@ -27,8 +27,16 @@ pal_fsa <- colorRampPalette(brewer.pal(9, "Pastel1"))
 
 # exploring 2016 census tracts (ct):
 
-ct <- read_sf(here("shp-files", "lct_000a16a_e.shp")) %>%
-  filter(PRNAME == "British Columbia / Colombie-Britannique") %>%
+
+packages <- c("here", "data.table", "tidyverse", "tabplot", "RColorBrewer", "MASS",
+              "leaflet", "rgdal", "ggridges", "plotly", "ggplot2", "lubridate",  "bcdata",
+              "shiny", "lattice", "mapview", "htmltools", "DT", "sf", "bcmaps")
+
+lapply(packages, library, character.only = TRUE)
+
+
+ct <- sf::st_read("shp-files/lct_000a16a_e.shp") %>%
+  dplyr::filter(PRNAME == "British Columbia / Colombie-Britannique") %>%
   st_transform(3005)
 
 # plot/map ct's
@@ -141,14 +149,16 @@ mapview(ER)
 
 # exploring pccf data to convert CTs to postal codes
 
-pccf <- fread(here("input-data", "PCCF_2013_CT_conversion.csv"))
-ind_1 <- fread(here("input-data", "1_IND.csv"))
+pccf <- fread(here::here("input-data", "PCCF_2013_CT_conversion.csv"))
+ind_1 <- fread(here::here("input-data", "1_IND.csv"))
 
 ## statcan data
 # check whether there are duplicated postal areas in ind_1 table per year
 ind_1_ct <- ind_1 %>%
   dplyr::filter(`level|of|geo|` == 61) %>%
   dplyr::filter(`year` == 2000)
+
+# check for duplicates
 duplicated(ind_1_ct$`postal|area|`) # no duplicates!
 
 # create a new column for census tracts
@@ -161,13 +171,39 @@ ind_1_subset <- ind_1 %>%
 pccf_subset <- pccf %>%
   dplyr::select(PostalCode, CT) %>%
   dplyr::mutate(CT = as.character(CT))
+
+# check for duplicates
 duplicated(pccf_subset$CT)
 duplicated(pccf_subset$PostalCode)
 
 # combine pccf and ind_1 tables based on CTs to get postal codes
 ind_pccf <- inner_join(ind_1_subset, pccf_subset, by = "CT")
+View(ind_pccf)
 
 # combine file to get CTs for all ind_1 table
-ind_pccf_ind <- left_join(ind_1, ind_pccf, by = "postal|area|")
+Sys.setenv(R_MAX_VSIZE = 16e9)
+Sys.getenv('R_MAX_VSIZE')
+ind_pccf_ind <- merge(ind_1, ind_pccf)
+
+# check for duplicates
+duplicated(ind_pccf_ind$`postal|area|`)
+
+#-------------------------------------------------------------------------------
+
+# convert CTs to rounded decimal places
+ind_1_subset <- ind_1 %>%
+  filter(`level|of|geo|` == 61) %>%
+  mutate(`postal|area|` = formatC(as.numeric(`postal|area|`), format="f", digits=2))
+ind_1_subset$`postal|area|`
+
+
+ind_1_rest <- ind_1 %>%
+  filter(`level|of|geo|` != 61)
+ind_1_rest$`postal|area|`
+
+x <- bind_rows(ind_1_subset, ind_1_rest) %>%
+  arrange(desc(year))
+x$`postal|area|`
+
 
 
