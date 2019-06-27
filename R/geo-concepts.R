@@ -27,14 +27,6 @@ pal_fsa <- colorRampPalette(brewer.pal(9, "Pastel1"))
 
 # exploring 2016 census tracts (ct):
 
-
-packages <- c("here", "data.table", "tidyverse", "tabplot", "RColorBrewer", "MASS",
-              "leaflet", "rgdal", "ggridges", "plotly", "ggplot2", "lubridate",  "bcdata",
-              "shiny", "lattice", "mapview", "htmltools", "DT", "sf", "bcmaps")
-
-lapply(packages, library, character.only = TRUE)
-
-
 ct <- sf::st_read("shp-files/lct_000a16a_e.shp") %>%
   dplyr::filter(PRNAME == "British Columbia / Colombie-Britannique") %>%
   st_transform(3005)
@@ -164,7 +156,8 @@ duplicated(ind_1_ct$`postal|area|`) # no duplicates!
 # create a new column for census tracts
 ind_1_subset <- ind_1 %>%
   dplyr::filter(`level|of|geo|` == 61) %>%
-  dplyr::mutate(CT = format(round(as.numeric(`postal|area|`, 2)), format = "f"))
+  dplyr::mutate(CT = formatC(as.numeric(`postal|area|`), format="f", digits=2))
+
 
 ## pccf data
 # read pccf and select CT geos as character type
@@ -190,20 +183,7 @@ duplicated(ind_pccf_ind$`postal|area|`)
 
 #-------------------------------------------------------------------------------
 
-# convert CTs to rounded decimal places
-ind_1_subset <- ind_1 %>%
-  filter(`level|of|geo|` == 61) %>%
-  mutate(`postal|area|` = formatC(as.numeric(`postal|area|`), format="f", digits=2))
-ind_1_subset$`postal|area|`
 
-
-ind_1_rest <- ind_1 %>%
-  filter(`level|of|geo|` != 61)
-ind_1_rest$`postal|area|`
-
-x <- bind_rows(ind_1_subset, ind_1_rest) %>%
-  arrange(desc(year))
-x$`postal|area|`
 
 
 
