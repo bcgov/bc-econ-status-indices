@@ -172,14 +172,13 @@ duplicated(pccf_subset$PostalCode)
 # combine pccf and ind_1 tables based on CTs to get postal codes
 ind_pccf <- inner_join(ind_1_subset, pccf_subset, by = "CT")
 View(ind_pccf)
+duplicated(ind_pccf$CT)
 
-# combine file to get CTs for all ind_1 table
+# combine file to get CTs for all ind_1 table (another way in case the memory fails for above code)
 Sys.setenv(R_MAX_VSIZE = 16e9)
 Sys.getenv('R_MAX_VSIZE')
 ind_pccf_ind <- merge(ind_1, ind_pccf)
 
-# check for duplicates
-duplicated(ind_pccf_ind$`postal|area|`)
 
 #-------------------------------------------------------------------------------
 
