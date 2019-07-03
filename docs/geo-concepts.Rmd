@@ -19,9 +19,13 @@ knitr::opts_chunk$set(echo = TRUE)
 if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 ```
 
+# Workflow for economic index generation:
+The workflow for generating an economic index consists of devising metrics based on available StatCan annual taxdata at individual and family levels. The following document contains fields from individual tables and their usage for index generation. 
+
 ### exploring levels of geography:
 
-Levels of geography in taxdata include:    
+Levels of geography in taxdata include:  
+
 -  3 FSA: ([URBAN FSA](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo036-eng.cfm))   
 -  6 RURPC: (RURAL POSTAL CODE AREAS)   
 -  7 OUA: (OTHER URBAN AREAS)   
@@ -37,4 +41,297 @@ Levels of geography in taxdata include:
 - 42 CA: ([CENSUS AGGLOMERATION](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo005-eng.cfm))   
 - 61 CT: ([CENSUS TRACT](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/geo013-eng.cfm))   
 
+
+Based on initial scans of data and maps, the levels of geography that are usable for this project include those that are small enough to hold the smallest number of taxfilers in a region and is inclusive of all of BC. The challenge here is that not one geography level can be chosen and so  economic indices needs to be generated for rural and urban communities separately. 
+
+Another challenge is that the same city, e.g. Abbotsford, can repeat multiple times with the same level of geography but different postal regions. 
+Since a cityID is also provided, we need to roll up the taxfilers information based on both level of geography and common cityIDs.
+
+1. Levels of geography:
+
+Geography levels need to be used for index generation since not all regions are covered by one geo level alone. Geo level #9 is for RURAL COMMUNITIES and #61 is for CENSUS TRACT. RURAL POSTAL CODE AREAS (#6) is also usable as they are small enough and exclusive of rural communities. CENSUS DIVISION (#21) also provides small enough regions <50,000 which is exclusive of census tracts.
+
+2. cityID: 
+
+Since levels of geography and postal names can have repetitions, we would need to consider names of places, geography and postal codes, as well as cityID to roll-up the taxfilers' information into one row per region of interest. Stat Can and PCCF metadata also refer to usage of cityIDs in decoding postal areas.
+
+3. quintile ratio:
+
+The simplest strategy for quintile ratio generation is dividing the income for urban and rural regions into 5 ratios. Currenly, the income is divided in <5k+, 5k+, 10k+, 15k+, 20k+, 25k+, 35k+, 50k+, 75k+, 75k+, 100k+, 150k+, 200k+, 250k+. 
+
+A quintile ratio, however, can vary depending on the regions of geography and the normal distribution of taxfilers in each region. 
+
+The index will vary depending on the distribution of taxfilers based on year and region.
+
+
+
+# Data usage:
+
+The simplest linkage will include use of individual table #1 from taxdata. This table holds information about taxfilers and dependents, summary table, income and demographics of individuals. Individual table #5 is the next simplest table for more detailed index generation that sheds light on gender and age distribution as well as income. Tables #6-12 include additional complexities and details that can be used depending on ministry needs.
+
+
+```{r script, results="hide", include=FALSE, echo = FALSE}
+
+## Source setup and function scripts
+if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
+```
+
+
+# Appendix I: 
+Individual Taxdata Tables structures:
+
+### Table I-01
+This table holds information about taxfilers and dependents, summary table, income and demographics of individuals.
+ 
+```{r table 1, eval=FALSE}
+ind_1 <- fread(here("input-data", "1_IND.csv"))
+
+Fields relevant to index:
+  
+postal|area|
+year
+cityid|
+level|of|geo|
+place|me|geo|
+taxfilers|#|
+total|income|median|males
+total|income|median|females
+total|income|median|total
+
+```
+
+
+### Table I-02
+This table includes information on taxfilers and dependents by sex, marital status and age groups. 
+There are **no** fields for index generation, directly.
+
+```{r table 2, eval=FALSE}
+ind_2 <- fread(here("input-data", "2_IND.csv"))
+```
+
+### Table I-3A-B-C
+These tables includes information on male (3A) and female (3B) and combined (3C) taxfilers and dependents by single years of age. 
+There are **no** fields for index generation, directly.
+
+```{r table 3, eval=FALSE}
+ind_3A <- fread(here("input-data", "3A_IND.csv"))
+ind_3B <- fread(here("input-data", "3B_IND.csv"))
+ind_3C <- fread(here("input-data", "3C_IND.csv"))
+```
+
+
+### Table I-04 
+This table includes information on taxfilers and dependents with income by source of income.
+There are **no** fields for index generation, directly.
+
+```{r table 4, eval=FALSE}
+ind_4 <- fread(here("input-data", "4_IND.csv"))
+```
+
+### Table I-5A-B-C
+These tables include male, female, and all taxfilers and dependents with income by total Income and age groups.
+The breakdowns for age and income can help with index generation.
+
+```{r table 5, eval=FALSE}
+ind_5A <- fread(here("input-data", "5A_IND.csv"))
+ind_5B <- fread(here("input-data", "5B_IND.csv"))
+ind_5C <- fread(here("input-data", "5C_IND.csv"))
+
+Fields of interest include:
+  
+postal|area|	
+cityid|	
+level|of|geo|	
+place|me|
+  ## taxfilers in the brackets below:
+  all|males|with|income|by|total|income|0-24|years|<$5k
+	all|males|with|income|by|total|income|0-24|years|$5k+	   
+	all|males|with|income|by|total|income|0-24|years|$10k+
+	all|males|with|income|by|total|income|0-24|years|$15k+
+	all|males|with|income|by|total|income|0-24|years|$20k+
+	all|males|with|income|by|total|income|0-24|years|$25k+
+	all|males|with|income|by|total|income|0-24|years|$35k+
+	all|males|with|income|by|total|income|0-24|years|$50k+
+	all|males|with|income|by|total|income|0-24|years|$75k+
+	all|males|with|income|by|total|income|0-24|years|$100k+
+	all|males|with|income|by|total|income|0-24|years|$150k+
+	all|males|with|income|by|total|income|0-24|years|$200k+
+	all|males|with|income|by|total|income|0-24|years|$250k+
+	all|males|with|income|by|total|income|0-24|years|total
+
+- Other age brackets include:
+  25-34, 35-44, 45-54, 55-64, 65-74, 75+
+
+- This information also exist for females and both genders combined.
+```
+
+
+### Table I-06 
+Taxfilers and dependents with income by sex, income taxes, selected deductions and benefits.
+
+```{r table 6, eval=FALSE}
+ind_6 <- fread(here("input-data", "6_IND.csv"))
+
+postal|area|
+year	
+cityid|	
+level|of|geo|	
+place|me|
+  
+total|income|$'000|males
+total|income|$'000|females
+total|income|$'000|total
+```
+
+### Table I-7A-B-C
+This table includes information on male, female, and all taxfilers and dependents with income by after-tax income and age groups
+
+```{r table 7, eval=FALSE}
+ind_7 <- fread(here("input-data", "7_IND.csv"))
+
+postal|area|	
+year	
+cityid|	
+level|of|geo|	
+place|me|
+    ## taxfilers in the brackets below:
+  all|males|with|after-tax|income|by|total|income|0-24|years|<$5k
+  all|males|with|after-tax|income|by|total|income|0-24|years|$5k+	
+  all|males|with|after-tax|income|by|total|income|0-24|years|$10k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$15k+	
+  all|males|with|after-tax|income|by|total|income|0-24|years|$20k+  
+  all|males|with|after-tax|income|by|total|income|0-24|years|$25k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$35k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$50k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$75k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$100k+   
+  all|males|with|after-tax|income|by|total|income|0-24|years|$150k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$200k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|$250k+
+  all|males|with|after-tax|income|by|total|income|0-24|years|total
+  
+Other age brackets include:
+  25-34, 35-44, 45-54, 55-64, 65-74, 75+
+
+- This information also exist for females and both genders combined.
+
+```
+
+
+### Table I-08 
+This table includes information on taxfilers and dependents with income by income taxes and after-tax income, sex and age groups.
+
+```{r table 8, eval=FALSE}
+ind_8 <- fread(here("input-data", "8_IND.csv"))
+
+postal|area|
+year	
+cityid|		
+postal|walk|	
+level|of|geo|	
+place|me|
+  ## taxfilers in the brackets below:
+  all|males|total|income|#|0-24|years	
+  all|males|total|income|#|$'000|0-24|years
+
+- Other age brackets include:
+  25-34, 35-44, 45-54, 55-64, 65+
+
+- This information also exist for females and both genders combined.
+```
+
+### Table I-09 
+This table includes economic dependency profile of individuals.
+
+```{r table 9, eval=FALSE}
+ind_9 <- fread(here("input-data", "9_IND.csv"))
+
+postal|area|	
+year	
+cityid|
+level|of|geo|
+place|me|
+empl.|income|#|males	
+empl.|income|#|females	
+empl.|income|#|total	
+empl.|income|$'000|males	
+empl.|income|$'000|females	
+empl.|income|$'000|total
+
+- Other sources of income include: 
+- government and non-government transfers.
+```
+
+### Table I-10 
+Labour income profile of individuals in this table can be used for index generation:
+
+```{r table 10, eval=FALSE}
+ind_10 <- fread(here("input-data", "10_IND.csv"))
+postal|area|
+year	
+cityid|	
+level|of|geo|	
+place|me|
+all|persons|males|	
+all|persons|females|	
+all|persons|total|	
+taxfilers|males|	
+taxfilers|females|	
+taxfilers|total|	
+total|income|number|males	
+total|income|number|females	
+total|income|number|total	
+total|income|$'000|males	
+total|income|$'000|females	
+total|income|$'000|total	
+total|income|median|males	
+total|income|median|females	
+total|income|median|total	
+
+- Other sources of income include: 
+labour, employment, wages, salaries, self employment, income, 
+```
+
+### Table I-11 
+Table including taxfilers and dependents at 15 years of age and over with labour income by sex and age groups. Fields of interest include:
+
+```{r table 11, eval=FALSE}
+ind_11 <- fread(here("input-data", "11_IND.csv"))
+postal|area|
+year	
+cityid|	
+level|of|geo|	
+place|me|
+  
+- Other sources of income include: 
+- female and male age ranges within income brackets
+```
+
+### Table I-12 
+Table includes taxfilers and dependents at 15 years of age and over receiving employment insurance by age groups and sex. Fields of interest include:
+
+```{r table 12, eval=FALSE}
+ind_12 <- fread(here("input-data", "12_IND.csv"))
+
+postal|area|
+year	
+cityid|	
+level|of|geo|	
+place|me|
+
+- Other sources of income include: 
+- labour, employment insurance income by age and sex categories 
+```
+
+### Table I-13 
+Table includes after-tax low income status of tax filers and dependents, census family low income measure, for couple and lone parent families by family composition. There are **no** fields for index generation, directly.
+
+```{r table 13, eval=FALSE}
+ind_13 <- fread(here("input-data", "13_IND.csv"))
+```
+
+# Appendix II: 
+Income inequality in Canada is defined in more detail, [here](https://www.compareyourincome.org/income_inequality_in_canada#what_is_the_issue). 
+Based on this, the average income in Canada stands at 44000 Canadian dollars. The total income explorer released by Statistics Canada provides additional measures, [here](https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/dv-vd/inc-rev/index-eng.cfm), and [here](https://www150.statcan.gc.ca/n1/daily-quotidien/180322/dq180322b-eng.htm). 
+Additional socioeconomic reports can be found, [here](https://www12.statcan.gc.ca/nhs-enm/2011/as-sa/99-014-x/99-014-x2011003_2-eng.cfm).
 
