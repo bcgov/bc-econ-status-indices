@@ -17,7 +17,7 @@ if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 #-------------------------------------------------------------------------------
 
 # read in the csv
-ind_1 <- fread(here("input-data", "1_IND.csv"))
+ind_1 <- fread(here::here("input-data", "1_IND.csv"))
 print(glimpse(ind_1))
 
 summary(ind_1$`total|income|median|total`)
@@ -25,7 +25,7 @@ hist(ind_1$`total|income|median|total`, xlab = "total median income", ylab = "fr
 
 # calculate quintile range of total median income across all years
 ind_1 %>%
-  filter(`place|me|geo|` == "BRITISH COLUMBIA") %>%
+  filter(`place|name|geo` == "BRITISH COLUMBIA") %>%
   select(`total|income|median|total`) %>%
   quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
 
@@ -63,7 +63,7 @@ plot(density(ind_1$`all|persons|average|age`), xlab = "index", ylab = "Taxfiler 
 ## Density exploration of data
 # density plots for all geographical levels based on total median income
 ggplot(ind_1) + geom_density(aes(x = `total|income|median|total`, color = year)) +
-  facet_wrap(~ `level|of|geo|`, scales = "free") +
+  facet_wrap(~ `level|of|geo`, scales = "free") +
   labs(title = "Density plots for geo levels", xlab = "Total median income")
 
 #-------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ ggplot(ind_1) + geom_density(aes(x = `total|income|median|total`, color = year))
 ## Boxplot exploration of data geographies
 # all geo levels boxplot
 
-ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`)) +
+ggplot(ind_1, aes(x= factor(`level|of|geo`), y= `taxfilers|#`)) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "11", "12", "21", "31", "41", "42", "51", "61"),
                    labels = c("FSA", "RURPC", "OUA", "CITY", "RURC", "OPROV", "PROV", "CANADA", "CD", "FED", "CMA", "CA", "ER", "CT")) +
   geom_boxplot( fill = "white", colour = "#3366FF") +
@@ -80,7 +80,7 @@ ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`)) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 # provincial geo levels boxplot
-ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `total|income|median|total`, group = `level|of|geo|`)) +
+ggplot(ind_1, aes(x= factor(`level|of|geo`), y= `total|income|median|total`, group = `level|of|geo`)) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "11", "12", "21", "31", "41", "42", "51", "61"),
                    labels = c("FSA", "RURPC", "OUA", "CITY", "RURC", "OPROV", "PROV", "CANADA", "CD", "FED", "CMA", "CA", "ER", "CT")) +
   geom_boxplot(fill = "white", colour = "#3366FF") +
@@ -89,7 +89,7 @@ ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `total|income|median|total`, gr
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 # all geo level boxplot in years
-ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = factor(`year`))) +
+ggplot(ind_1, aes(x= factor(`level|of|geo`), y= `taxfilers|#`, colour = factor(`year`))) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "11", "12", "21", "31", "41", "42", "51", "61"),
                    labels = c("FSA", "RURPC", "OUA", "CITY", "RURC", "OPROV", "PROV", "CANADA", "CD", "FED", "CMA", "CA", "ER", "CT")) +
   geom_boxplot() +
@@ -99,10 +99,10 @@ ggplot(ind_1, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = factor
 
 # boxplot removing Canada and provincial level of geo's
 ind_1_plot <- ind_1 %>%
-  select(`taxfilers|#|`,`level|of|geo|`) %>%
-  filter(ind_1$`level|of|geo|` != 11 & ind_1$`level|of|geo|` != 12)
+  select(`taxfilers|#`,`level|of|geo`) %>%
+  filter(ind_1$`level|of|geo` != 11 & ind_1$`level|of|geo` != 12)
 
-ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, group = `level|of|geo|`)) +
+ggplot(ind_1_plot, aes(x= factor(`level|of|geo`), y= `taxfilers|#`, group = `level|of|geo`)) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "21", "31", "41", "42", "51", "61"),
                    labels = c("FSA", "RURPC", "OUA", "CITY", "RURC", "OPROV", "CD", "FED", "CMA", "CA", "ER", "CT")) +
   geom_boxplot(fill = "white", colour = "#3366FF") +
@@ -112,11 +112,11 @@ ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, group = `l
 
 # boxplot removing Canada and provincial level of geo's based on years
 ind_1_plot <- ind_1 %>%
-  select(`taxfilers|#|`,`level|of|geo|`, `year`) %>%
-  filter(ind_1$`level|of|geo|` != 11 & ind_1$`level|of|geo|` != 12) %>%
+  select(`taxfilers|#`,`level|of|geo`, `year`) %>%
+  filter(ind_1$`level|of|geo` != 11 & ind_1$`level|of|geo` != 12) %>%
   filter(`year` == 2000)
 
-ggplot(ind_1_plot, aes(x= factor(`level|of|geo|`), y= `taxfilers|#|`, colour = factor(`year`))) +
+ggplot(ind_1_plot, aes(x= factor(`level|of|geo`), y= `taxfilers|#`, colour = factor(`year`))) +
   scale_x_discrete("Levels of Geo", #breaks= c("3", "6", "7", "8", "9", "10", "21", "31", "41", "42", "51", "61"),
                    labels = c("FSA", "RURPC", "OUA", "CITY", "RURC", "OPROV", "CD", "FED", "CMA", "CA", "ER", "CT")) +
   geom_boxplot() + #fill = "white", colour = "#3366FF") +
@@ -136,9 +136,9 @@ tableplot(ind_1_plot)
 # pie chart for number of taxfilers in geo areas of interest (i.e. 6, 9, 21, 61)
 # Wrangle data into form we want.
 pie_plot <- ind_1_plot %>%
-  mutate(`level|of|geo|` = ifelse(`level|of|geo|` %in% c('6', '9', '21', '61'), `level|of|geo|`, 'other')) %>%
-  group_by(`level|of|geo|` ) %>%
-  summarise(`taxfilers|#|` = sum(`taxfilers|#|`)) %>%
+  mutate(`level|of|geo` = ifelse(`level|of|geo` %in% c('6', '9', '21', '61'), `level|of|geo`, 'other')) %>%
+  group_by(`level|of|geo` ) %>%
+  summarise(`taxfilers|#` = sum(`taxfilers|#`)) %>%
   setnames(c("geos", "taxfilers"))
 
 ggplot(pie_plot, aes(x = 1, y = taxfilers, fill = geos)) +
@@ -161,32 +161,32 @@ tableplot(pie_plot)
 
 # year 2000
 ind_1 %>%
-  filter(`level|of|geo|` == 61) %>%
+  filter(`level|of|geo` == 61) %>%
   filter(`year` == 2000) %>%
   select(`total|income|median|total`) %>%
   quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
 
 # year 2015
 ind_1 %>%
-  filter(`level|of|geo|` == 61) %>%
+  filter(`level|of|geo` == 61) %>%
   filter(`year` == 2015) %>%
   select(`total|income|median|total`) %>%
   quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
 
 # quintile range for geo level 61 for all years
 q_61_all <- ind_1 %>%
-  select(`year`, `total|income|median|total`, `level|of|geo|`) %>%
+  select(`year`, `total|income|median|total`, `level|of|geo`) %>%
   group_by(`year`) %>%
-  filter(`level|of|geo|` == 61) %>%
+  filter(`level|of|geo` == 61) %>%
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
 # quintile range for geo level 61 for year of 2000
 
 q_61_2000 <- ind_1 %>%
-  select(`year`, `total|income|median|total`, `level|of|geo|`) %>%
+  select(`year`, `total|income|median|total`, `level|of|geo`) %>%
   filter(`year` == 2000) %>%
-  filter(`level|of|geo|` == 61) %>%
+  filter(`level|of|geo` == 61) %>%
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
@@ -199,7 +199,7 @@ q_61_all$UQs %in% q_61_2000$UQs
 
 # year 2000
 ind_1 %>%
-  filter(`level|of|geo|` == 9) %>%
+  filter(`level|of|geo` == 9) %>%
   filter(`year` == 2000) %>%
   select(`total|income|median|total`) %>%
   quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
@@ -207,25 +207,25 @@ ind_1 %>%
 
 # year 2015
 ind_1 %>%
-  filter(`level|of|geo|` == 9) %>%
+  filter(`level|of|geo` == 9) %>%
   filter(`year` == 2015) %>%
   select(`total|income|median|total`) %>%
   quantile(ind_1$`total|income|median|total`, probs =seq(0,1,0.25), na.rm = TRUE)
 
 # quintile range for geo level 9 for all years
 q_9_all <- ind_1 %>%
-  select(`year`, `total|income|median|total`, `level|of|geo|`) %>%
+  select(`year`, `total|income|median|total`, `level|of|geo`) %>%
   group_by(`year`) %>%
-  filter(`level|of|geo|` == 9) %>%
+  filter(`level|of|geo` == 9) %>%
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
 # quintile range for geo level 9 for year of 2000
 
 q_9_2000 <- ind_1 %>%
-  select(`year`, `total|income|median|total`, `level|of|geo|`) %>%
+  select(`year`, `total|income|median|total`, `level|of|geo`) %>%
   filter(`year` == 2000) %>%
-  filter(`level|of|geo|` == 9) %>%
+  filter(`level|of|geo` == 9) %>%
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
