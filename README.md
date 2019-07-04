@@ -11,13 +11,13 @@ The annual income tax data in this repository are purchased from Statistics Cana
 
 ### Usage 
 
-The source .csv files are tidied anonymized individual and family income tax data that are placed in the `input-data` sub-folder.  
+The source .csv files are tidied anonymized individual and family income tax data that are placed in the `input-data` subfolder.  
 
-The codes for economic indices and visualization of data are in `R` sub-folder.  
+The codes for economic indices and visualization of data are in `R` subfolder.  
 
-Generated graphs are stored in `output-data` subfolder. 
+Generated graphs and data aggregates can be stored in `output-data` subfolder. 
 
-Insights developed from analyses of data tables are provided in rmd format in  `docs` folder.
+Insights developed from analyses of data tables and references are provided in rmd format in  `docs` subfolder.
 
 
 ### Getting Help or Reporting an Issue 
