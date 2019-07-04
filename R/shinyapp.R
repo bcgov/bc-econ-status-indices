@@ -17,13 +17,13 @@ if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 #-------------------------------------------------------------------------------
 
 # Read and clean the data
-ind_1 <- fread(here("input-data", "1_IND.csv"))
+ind_1 <- fread(here::here("input-data", "1_IND.csv"))
 ind_1_bc <- ind_1 %>%
-  filter(`level|of|geo|` == 9 | `level|of|geo|` == 61 | `level|of|geo|` == 6 | `level|of|geo|` == 21) %>%
-  select(`year`, `level|of|geo|`, `place|me|geo|`, `total|income|median|total`, `taxfilers|#|`) %>%
-  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"QU<c9>BEC","Québec")) %>%
-  mutate(`place|me|geo|` = str_to_title(`place|me|geo|`)) %>%
-  rename("YEAR" =`year`, "GEO" = `level|of|geo|`, "GEO_NAME" = `place|me|geo|`, "MED_INCOME" = `total|income|median|total`, "TAXFILERS" = `taxfilers|#|`)
+  filter(`level|of|geo` == 9 | `level|of|geo` == 61 | `level|of|geo` == 6 | `level|of|geo` == 21) %>%
+  select(`year`, `level|of|geo`, `place|name|geo`, `total|income|median|total`, `taxfilers|#`) %>%
+  mutate(`place|name|geo` = str_replace_all(`place|name|geo`,"QU<c9>BEC","Québec")) %>%
+  mutate(`place|name|geo` = str_to_title(`place|name|geo`)) %>%
+  rename("YEAR" =`year`, "GEO" = `level|of|geo`, "GEO_NAME" = `place|name|geo`, "MED_INCOME" = `total|income|median|total`, "TAXFILERS" = `taxfilers|#`)
 
 print(glimpse(ind_1_bc))
 
