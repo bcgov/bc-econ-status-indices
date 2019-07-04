@@ -182,7 +182,19 @@ ind_pccf_ind <- merge(ind_1, ind_pccf)
 
 #-------------------------------------------------------------------------------
 
+# create a new column for urban areas
+ind_1_ua <- ind_1 %>%
+  dplyr::filter(`level|of|geo|` == 7) %>%
+  dplyr::filter(`year` == 2000)
+
+
+## pccf data
+# read pccf and select CT geos as character type
+pccf_subset <- pccf %>%
+  dplyr::filter(CSDname == "Campbell River")
 
 
 
+pccf_subset <- pccf %>%
+  dplyr::filter(PR == 59)
 
