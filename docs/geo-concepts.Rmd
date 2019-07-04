@@ -445,3 +445,12 @@ Income inequality in Canada is defined in more detail, [here](https://www.compar
 Based on this, the average income in Canada stands at 44000 Canadian dollars. The total income explorer released by Statistics Canada provides additional measures, [here](https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/dv-vd/inc-rev/index-eng.cfm), and [here](https://www150.statcan.gc.ca/n1/daily-quotidien/180322/dq180322b-eng.htm). 
 Additional socioeconomic reports can be found, [here](https://www12.statcan.gc.ca/nhs-enm/2011/as-sa/99-014-x/99-014-x2011003_2-eng.cfm).
 
+
+# Resources	
+- Dictionary, Census of Population, 2016
+- Guide to the Census of Population, 2016
+- Income Reference Guide, Census of Population, 2016
+- Statistics Canada's Open Licence
+- Reference Guide for the Annual Income Estimates for Census Families, Individuals and Seniors 2016
+- A Review of Methods for Deriving an Index for Socioeconomic Status in British Columbia April 2013
+- Postal Code OM Conversion File (PCCF), Reference Guide, June 2017
