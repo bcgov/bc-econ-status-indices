@@ -17,41 +17,41 @@ if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 #-------------------------------------------------------------------------------
 
 # Read and clean the data
-ind_1 <- fread(here("input-data", "1_IND.csv"))
+ind_1 <- fread(here::here("input-data", "1_IND.csv"))
 ind_1_df <- ind_1 %>%
-  filter(`level|of|geo|` == "11") %>%
+  filter(`level|of|geo` == "11") %>%
   filter(`year` == "2000") %>%
-  select(`year`, `place|me|geo|`, `total|income|median|total`) %>%
-  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"QU<c9>BEC","Québec")) %>%
-  mutate(`place|me|geo|` = str_to_title(`place|me|geo|`)) %>%
-  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"Newfoundland", "Newfoundland and Labrador")) %>%
-  rename("YEAR" =`year`, "GEO" = `place|me|geo|`, "INCOME" = `total|income|median|total`)
+  select(`year`, `place|name|geo`, `total|income|median|total`) %>%
+  mutate(`place|name|geo` = str_replace_all(`place|name|geo`,"QU<c9>BEC","Québec")) %>%
+  mutate(`place|name|geo` = str_to_title(`place|name|geo`)) %>%
+  mutate(`place|name|geo` = str_replace_all(`place|name|geo`,"Newfoundland", "Newfoundland and Labrador")) %>%
+  rename("YEAR" =`year`, "GEO" = `place|name|geo`, "INCOME" = `total|income|median|total`)
 
 print(glimpse(ind_1_df))
 
 #-------------------------------------------------------------------------------
 
 ind_1_df_females <- ind_1 %>%
-  filter(`level|of|geo|` == "11") %>%
+  filter(`level|of|geo` == "11") %>%
   filter(`year` == "2000") %>%
-  select(`year`, `place|me|geo|`, `total|income|median|females`) %>%
-  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"QU<c9>BEC","Québec")) %>%
-  mutate(`place|me|geo|` = str_to_title(`place|me|geo|`)) %>%
-  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"Newfoundland", "Newfoundland and Labrador")) %>%
-  rename("YEAR" =`year`, "GEO" = `place|me|geo|`, "INCOME" = `total|income|median|females`)
+  select(`year`, `place|name|geo`, `total|income|median|females`) %>%
+  mutate(`place|name|geo` = str_replace_all(`place|name|geo`,"QU<c9>BEC","Québec")) %>%
+  mutate(`place|name|geo` = str_to_title(`place|name|geo`)) %>%
+  mutate(`place|name|geo` = str_replace_all(`place|name|geo`,"Newfoundland", "Newfoundland and Labrador")) %>%
+  rename("YEAR" =`year`, "GEO" = `place|name|geo`, "INCOME" = `total|income|median|females`)
 
 print(glimpse(ind_1_df_females))
 
 #-------------------------------------------------------------------------------
 
 ind_1_df_males <- ind_1 %>%
-  filter(`level|of|geo|` == "11") %>%
+  filter(`level|of|geo` == "11") %>%
   filter(`year` == "2000") %>%
-  select(`year`, `place|me|geo|`, `total|income|median|males`) %>%
-  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"QU<c9>BEC","Québec")) %>%
-  mutate(`place|me|geo|` = str_to_title(`place|me|geo|`)) %>%
-  mutate(`place|me|geo|` = str_replace_all(`place|me|geo|`,"Newfoundland", "Newfoundland and Labrador")) %>%
-  rename("YEAR" =`year`, "GEO" = `place|me|geo|`, "INCOME" = `total|income|median|males`)
+  select(`year`, `place|name|geo`, `total|income|median|males`) %>%
+  mutate(`place|name|geo` = str_replace_all(`place|name|geo`,"QU<c9>BEC","Québec")) %>%
+  mutate(`place|name|geo` = str_to_title(`place|name|geo`)) %>%
+  mutate(`place|name|geo` = str_replace_all(`place|name|geo`,"Newfoundland", "Newfoundland and Labrador")) %>%
+  rename("YEAR" =`year`, "GEO" = `place|name|geo`, "INCOME" = `total|income|median|males`)
 
 print(glimpse(ind_1_df_males))
 
