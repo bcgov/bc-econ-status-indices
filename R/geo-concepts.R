@@ -147,54 +147,91 @@ ind_1 <- fread(here::here("input-data", "1_IND.csv"))
 ## statcan data
 # check whether there are duplicated postal areas in ind_1 table per year
 ind_1_ct <- ind_1 %>%
-  dplyr::filter(`level|of|geo|` == 61) %>%
-  dplyr::filter(`year` == 2000)
+  dplyr::filter(`level|of|geo` == 61) %>%
+  dplyr::filter(`year` == 2013) %>%
+  dplyr::mutate(CT = `postal|area`)
 
 # check for duplicates
-duplicated(ind_1_ct$`postal|area|`) # no duplicates!
+duplicated(ind_1_ct$`postal|area`) # no duplicates!
+duplicated(ind_1_ct$CT)
 
-# create a new column for census tracts
-ind_1_subset <- ind_1 %>%
-  dplyr::filter(`level|of|geo|` == 61) %>%
-  dplyr::mutate(CT = formatC(as.numeric(`postal|area|`), format="f", digits=2))
+# create a new column for census tracts if they are not rounded
+# ind_1_subset <- ind_1 %>%
+#  dplyr::filter(`level|of|geo` == 61) %>%
+#  dplyr::mutate(CT = formatC(as.numeric(`postal|area`), format="f", digits=2))
 
 
 ## pccf data
 # read pccf and select CT geos as character type
-pccf_subset <- pccf %>%
+# concatenate SAC and CTname to get to CT
+revtrunc <- function(x) { x - floor(x) }
+
+pccf_ct_construction <- pccf %>%
+  select(SAC, CTname) %>%
+  mutate(CTname_extraction = revtrunc(CTname)) %>%
+  mutate(CTnam_digit_repair1 = round(as.numeric(CTname, 4))) %>%
+  mutate(CTnam_digit_repair2 = formatC(as.numeric(CTnam_digit_repair1), width = 4, flag = '0')) %>%
+  mutate(SAC_new = formatC(as.numeric(SAC), width = 3, flag = '0'))
+
+
+pccf_ct_construction$CT <- paste0(pccf_ct_construction$SAC_new,pccf_ct_construction$CTnam_digit_repair2, pccf_ct_construction$CTname_extraction)
+
+pccf_ct_construction$CT2 <- formatC(as.numeric(pccf_ct_construction$CT), format="f", digits=2)
+
+s#-------------------------------------------------------------------------------
+
+# optional: write table output
+# write_csv(pccf, here("pccf-data", "PCCF_2013_CT_conversion.csv"))
+
+pccf_ct_subset <- pccf %>%
   dplyr::select(PostalCode, CT) %>%
   dplyr::mutate(CT = as.character(CT))
 
 # check for duplicates
-duplicated(pccf_subset$CT)
-duplicated(pccf_subset$PostalCode)
+duplicated(pccf_ct_subset$CT)
+duplicated(pccf_ct_subset$PostalCode)
 
 # combine pccf and ind_1 tables based on CTs to get postal codes
-ind_pccf <- inner_join(ind_1_subset, pccf_subset, by = "CT")
+ind_pccf <- inner_join(ind_1_ct, pccf_ct_subset, by = "CT")
 View(ind_pccf)
 duplicated(ind_pccf$CT)
 
-# combine file to get CTs for all ind_1 table (another way in case the memory fails for above code)
+# combine file to get CTs for all ind_1 table
+## (another way in case the memory fails for above code)
 Sys.setenv(R_MAX_VSIZE = 16e9)
 Sys.getenv('R_MAX_VSIZE')
 ind_pccf_ind <- merge(ind_1, ind_pccf)
 
 
+# Remove duplicated rows based on common CTs
+ind_pccf %>% distinct(CT, .keep_all = TRUE)
+
+
 #-------------------------------------------------------------------------------
 
-# create a new column for urban areas
-ind_1_ua <- ind_1 %>%
-  dplyr::filter(`level|of|geo|` == 7) %>%
-  dplyr::filter(`year` == 2000)
+# create a new column for CD:census division (geo level 21)
+ind_1_cd <- ind_1 %>%
+  dplyr::filter(`level|of|geo` == 21) %>%
+  dplyr::filter(`year` == 2013)
 
 
-## pccf data
-# read pccf and select CT geos as character type
-pccf_subset <- pccf %>%
-  dplyr::filter(CSDname == "Campbell River")
+# CDs are 6 digits: 2 first digits = Province, 2 next digits = Economic Region, 2 last digits = Census Division
+pccf_cd_subset <- pccf %>%
+  dplyr::select(PR, ER, CDuid) %>%
+  dplyr::mutate(CDuid = stringr::str_sub(as.numeric(CDuid), -2, -1)) %>%
+  dplyr::mutate(CD = paste0(pccf$PR,pccf$ER, pccf$CDuid))
 
+#-------------------------------------------------------------------------------
 
+# create a new column for rural postal area codes (geo level 6)
+ind_1_rpc <- ind_1 %>%
+  dplyr::filter(`level|of|geo` == 6) %>%
+  dplyr::filter(`year` == 2013)
 
-pccf_subset <- pccf %>%
-  dplyr::filter(PR == 59)
+#-------------------------------------------------------------------------------
+
+# create a new column for rural communities (geo level 9)
+ind_1_rc <- ind_1 %>%
+  dplyr::filter(`level|of|geo` == 9) %>%
+  dplyr::filter(`year` == 2013)
 
