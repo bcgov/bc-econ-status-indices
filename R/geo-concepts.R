@@ -166,7 +166,7 @@ duplicated(ind_1_ct$CT)
 # concatenate SAC and CTname to get to CT
 revtrunc <- function(x) { x - floor(x) }
 
-pccf_ct_construction <- pccf %>%
+pccf_ct_subset <- pccf %>%
   select(SAC, CTname) %>%
   mutate(CTname_extraction = revtrunc(CTname)) %>%
   mutate(CTnam_digit_repair1 = round(as.numeric(CTname, 4))) %>%
@@ -174,54 +174,56 @@ pccf_ct_construction <- pccf %>%
   mutate(SAC_new = formatC(as.numeric(SAC), width = 3, flag = '0'))
 
 
-pccf_ct_construction$CT <- paste0(pccf_ct_construction$SAC_new,pccf_ct_construction$CTnam_digit_repair2, pccf_ct_construction$CTname_extraction)
 
-pccf_ct_construction$CT2 <- formatC(as.numeric(pccf_ct_construction$CT), format="f", digits=2)
+pccf_ct_subset$CT <- paste0(pccf_ct_subset$SAC_new,pccf_ct_subset$CTnam_digit_repair2)
+pccf_ct_subset$CT2 <- formatC(as.numeric(pccf_ct_subset$CT), width = 7, format="d", flag = "0")
 
-s#-------------------------------------------------------------------------------
+scipenopts <- options(scipen = 20)
+pccf_ct_subset$CTname_extraction2 <- str_extract(as.character(pccf_ct_subset$CTname_extraction), "[0-9]{2}$")
+options(scipenopts)
 
-# optional: write table output
-# write_csv(pccf, here("pccf-data", "PCCF_2013_CT_conversion.csv"))
+pccf_ct_subset$CTname_extraction3 <- str_replace_all(!is.na(as.numeric(pccf_ct_subset$CTname_extraction2), "10", 0))
 
-pccf_ct_subset <- pccf %>%
-  dplyr::select(PostalCode, CT) %>%
-  dplyr::mutate(CT = as.character(CT))
-
-# check for duplicates
-duplicated(pccf_ct_subset$CT)
-duplicated(pccf_ct_subset$PostalCode)
-
-# combine pccf and ind_1 tables based on CTs to get postal codes
-ind_pccf <- inner_join(ind_1_ct, pccf_ct_subset, by = "CT")
-View(ind_pccf)
-duplicated(ind_pccf$CT)
-
-# combine file to get CTs for all ind_1 table
-## (another way in case the memory fails for above code)
-Sys.setenv(R_MAX_VSIZE = 16e9)
-Sys.getenv('R_MAX_VSIZE')
-ind_pccf_ind <- merge(ind_1, ind_pccf)
-
-
-# Remove duplicated rows based on common CTs
-ind_pccf %>% distinct(CT, .keep_all = TRUE)
+pccf_ct_subset$CT3 <- paste0(pccf_ct_subset$CT2,pccf_ct_subset$CTname_extraction2)
 
 
 #-------------------------------------------------------------------------------
 
+# exploring pccf data to convert CDs to postal codes
 # create a new column for CD:census division (geo level 21)
 ind_1_cd <- ind_1 %>%
   dplyr::filter(`level|of|geo` == 21) %>%
   dplyr::filter(`year` == 2013)
 
-
-# CDs are 6 digits: 2 first digits = Province, 2 next digits = Economic Region, 2 last digits = Census Division
+# CDs are 6 digits: 2 first digits = Province, 2 next digits = Economic Region, 2 last digits = last two digits of CDuid
 pccf_cd_subset <- pccf %>%
-  dplyr::select(PR, ER, CDuid) %>%
-  dplyr::mutate(CDuid = stringr::str_sub(as.numeric(CDuid), -2, -1)) %>%
-  dplyr::mutate(CD = paste0(pccf$PR,pccf$ER, pccf$CDuid))
+  dplyr::select(PR, ER, CDuid, PostalCode, CSDname) %>%
+  dplyr::mutate(CDuid2 = stringr::str_extract(as.character(CDuid),"[0-9]{2}$")) %>%
+  #dplyr::mutate(CDuid3 = formatC(as.numeric(CDuid2), width = 2, format="d", flag = "0")) %>% # this is to keep leading zeros
+  dplyr::mutate(PR = as.character(pccf$PR)) %>%
+  dplyr::mutate(ER = as.character(pccf$ER)) %>%
+  dplyr::mutate(CD = paste0(pccf$PR, pccf$ER)) %>%
+  dplyr::mutate(CD = paste0(CD, CDuid2)) %>%
+  dplyr::mutate(`postal|area` = CD)
+
+
+# construct the ind_1 tables to get postal code conversions for CD
+ind_1_pccf_cd <- inner_join(ind_1_cd, pccf_cd_subset, by = NULL)
+
+
+# explore data structure
+glimpse(ind_1_pccf_cd)
+ind_1_pccf_cd %>%
+  select(PostalCode , CSDname, `postal|area`, `taxfilers|#`)
+
+# Remove duplicated CDs
+ind_1_pccf_cd %>% distinct(CD, .keep_all = TRUE)
+
 
 #-------------------------------------------------------------------------------
+
+# exploring pccf data to convert rural postal area codes to postal codes
+# this conversion is not needed as they already have postal codes
 
 # create a new column for rural postal area codes (geo level 6)
 ind_1_rpc <- ind_1 %>%
@@ -229,6 +231,9 @@ ind_1_rpc <- ind_1 %>%
   dplyr::filter(`year` == 2013)
 
 #-------------------------------------------------------------------------------
+
+# exploring pccf data to convert rural communities to postal codes
+# this conversion is not needed as they already have postal codes
 
 # create a new column for rural communities (geo level 9)
 ind_1_rc <- ind_1 %>%
