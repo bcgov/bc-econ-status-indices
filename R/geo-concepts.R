@@ -188,12 +188,10 @@ pccf_ct_subset$CT1 <- (as.numeric(pccf_ct_subset$CT)) + (pccf_ct_subset$CTname_e
 pccf_ct_subset$CT2 <- formatC(pccf_ct_subset$CT1, width = 9, flag = '0')
 format(pccf_ct_subset$CT2, scientific = FALSE)
 
-paste0(as.character(pccf_ct_subset$CT),CTname_extraction
-
 
 # Remove duplicated CDs and generate Quintile range for CD's
 ind_1_quintile_ct <- ind_1_pccf_ct %>% distinct(CT, .keep_all = TRUE) %>%
-  mutate(RQs =  ntile(`total|income|median|total`, 5)))
+  mutate(RQs =  ntile(`total|income|median|total`, 5))
 
 #-------------------------------------------------------------------------------
 
