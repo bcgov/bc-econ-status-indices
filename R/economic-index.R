@@ -26,12 +26,12 @@ dip <- read.csv("synthetic-dip-data.csv")
 # Urban quintile
 # cleanup the tax data
 clean_taxdata_u <- tax %>%
-  filter(`level|of|geo|` == 61) %>%
-  select(`level|of|geo|`, `total|income|median|total`, `year`, `postal|area|`) %>%
+  filter(`level|of|geo` == 61) %>%
+  select(`level|of|geo`, `total|income|median|total`, `year`, `postal|area`) %>%
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   mutate(year = as.numeric(`year`)) %>%
-  mutate(geo = `level|of|geo|`) %>%
-  mutate(pc = as.factor(`postal|area|`)) %>%
+  mutate(geo = `level|of|geo`) %>%
+  mutate(pc = as.factor(`postal|area`)) %>%
   select(UQs, year, geo, pc)
 
 
@@ -51,12 +51,12 @@ integrate_dipdata_u <- inner_join(clean_taxdata_u, clean_dipdata_u, by = c("geo"
 # Rural Quintile
 # cleanup the tax data
 clean_taxdata_r <- tax %>%
-  filter(`level|of|geo|` == 9) %>%
-  select(`level|of|geo|`, `total|income|median|total`, `year`, `postal|area|`) %>%
+  filter(`level|of|geo` == 9) %>%
+  select(`level|of|geo`, `total|income|median|total`, `year`, `postal|area`) %>%
   mutate(RQs =  ntile(`total|income|median|total`, 5)) %>%
   mutate(year = as.numeric(`year`)) %>%
-  mutate(geo = `level|of|geo|`) %>%
-  mutate(pc = as.factor(`postal|area|`)) %>%
+  mutate(geo = `level|of|geo`) %>%
+  mutate(pc = as.factor(`postal|area`)) %>%
   select(RQs, year, geo, pc)
 
 
