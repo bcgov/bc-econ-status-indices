@@ -140,6 +140,11 @@ mapview(ER)
 
 #-------------------------------------------------------------------------------
 
+# To convert Census tracts and divisions to postal codes, we need PCCF.
+# A sample PCCF from 2013 was downloaded from University of Victoria's Dataverse Library (proprietary access)
+# PCCF guides: https://www150.statcan.gc.ca/n1/pub/92-154-g/92-154-g2015001-eng.htm
+# link: http://dvn.library.ubc.ca/dvn/dv/UVICLDS/faces/study/StudyPage.xhtml;jsessionid=468409d41ade69d638b579fbbee1?globalId=hdl:11272/10658&studyListingIndex=0_468409d41ade69d638b579fbbee1
+
 # exploring pccf data to convert CTs to postal codes
 
 pccf <- fread(here::here("input-data", "PCCF_2013_CT_conversion.csv"))
