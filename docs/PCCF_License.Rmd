@@ -1,0 +1,278 @@
+---
+title: "PCCF Use License"
+author: ""
+date: '2018-12-12'
+output: pdf_document
+---
+
+
+The Abacus Dataverse Network is the research data repository of the British Columbia Research Libraries' Data Services, a collaboration involving the Data Libraries at Simon Fraser University (SFU), the University of British Columbia (UBC), the University of Northern British Columbia (UNBC) and the University of Victoria (UVic). To retrieve datasets which are licensed to all participating institutions, as well as datasets unique to your own institution, please go to the login page above and follow the Affiliated User instructions. For assistance, please contact the Data Librarian at your participating institution.
+
+Peters, Paul A; Wilkins, Russell, 2012-08-02, "Census of Canada. Postal Code Conversion File, PCCF+ Version 5K May 2011 Postal Codes, 2006 [2012]", http://hdl.handle.net.ezproxy.library.uvic.ca/11272/TFOFR V4 [Version]
+
+Census of Canada. Postal Code Conversion File, PCCF+ Version 5K May 2011 Postal Codes, 2006 [2012]
+
+The Postal Code Conversion File Plus (PCCF+) is a complementary product to the Postal Code Conversion File (PCCF). It is an automated system that uses postal codes to assign census geography. PCCF+ is based on the latest Postal Code Conversion File and the Postal Code Population Weight File produced by the Geography Division of Statistics Canada. PCCF+ uses weights to allocate postal codes linked to multiple dissemination areas according to the distribution of population using a given postal code.
+
+# Statcan Postal Code license
+
+This analysis is based on the Statistics Canada (Name of database and/or microdata file) (Reference Year). All computations, use and interpretation of these data are entirely that of (Name of Author(s) or Licensee).
+
+
+Terms of UseHide fields in this section
+Special Permissions	Resource access is LICENSED for Abacus institutions.
+Restrictions	Statcan Postal Code license
+Conditions	
+Licence agreement for Data from Statistics Canada, including Public Use Microdata Files, Postal Code products and the CIHI Discharge Abstracts Database.
+
+# DEFINITION
+
+1. "Microdata file" means a non-identifiable data set containing characteristics pertaining to surveyed units as described in section 2.
+
+# DESCRIPTION OF PRODUCT
+
+2. The Microdata file referred to in this Agreement relates to Public Use Microdata Files (PUMF) in the DLI collection.
+
+# CONTACT AND CUSTODIAN
+
+3.(1) The Licensee hereby nominates the DLI contact as the contact person to whom all further communication shall be addressed by Statistics Canada on any matter concerning this Agreement.
+
+3.(2) The Licensee hereby nominates the DLI contact as the designated custodian of the Microdata file with responsibility for ensuring its proper use and custody pursuant to the terms of this Agreement.
+
+DELIVERY OF PRODUCT
+
+4. Upon signature of this Agreement, Statistics Canada shall provide to the Licensee access to the Microdata file collection and one copy of the related documentation.
+
+# OWNERSHIP
+
+5. The Microdata files and related documentation shall at all times be and remain the sole and exclusive property of Statistics Canada, it being mutually agreed that this Agreement involves a licence for the use of the Microdata files and related documentation and that nothing contained herein shall be deemed to convey any title or ownership interest in the Microdata files or the related documentation to the Licensee.
+
+# USE OF MICRODATA
+
+6.(1) Statistics Canada hereby grants to the Licensee a non-exclusive, non-assignable and non-transferable licence to use the Microdata files and related documentation for statistical and research purposes. The Microdata files shall not be used for any other purposes without the prior written consent of Statistics Canada.
+
+6.(2) Use of the Microdata files is limited to the Licensee. The Microdata file cannot be reproduced and transmitted to any person or organization outside of the Licensee’s organization.
+
+6.(3) The Licensee shall not merge or link the records on the Microdata files with any other databases for the purpose of attempting to identify an individual person, business or organization.
+
+6.(4) The Licensee shall not present information from the Microdata files in such a manner that gives the appearance that the Licensee may have received, or had access to, information held by Statistics Canada about any identifiable person, business or organization.
+
+6.5(5) The Licensee shall not disassemble, decompile or in any way attempt to reverse engineer any software provided as part of the Microdata files.
+
+# NO WARRANTY AND NO LIABILITY
+
+7. The Information is licensed ‘as is’, and Statistics Canada makes no representations or warranties whatsoever with respect to the Information, whether express or implied, in relation to the Information and expressly disclaims any implied warranty of merchantability or fitness for a particular purpose of the Information.
+
+Statistics Canada or any of its Ministers, officials, servants, employees, agents, successors and Assigns shall not be liable for any errors or omissions in the Information and shall not, under any circumstances, be liable for any direct, indirect, special, incidental, consequential, or other loss, injury, damage, however caused, that you may suffer at any time by reason of your possession, access to or use of the Information arising out of the exercise of your rights or the fulfillment of your obligations under this agreement.
+
+# PUBLICATION BY THE LICENSEE
+
+8. In any publication of any information based on the Microdata files, the Licensee shall use the following form of accreditation:
+
+This analysis is based on the Statistics Canada (Name of database and/or microdata file) (Reference Year). All computations, use and interpretation of these data are entirely that of (Name of Author(s) or Licensee).
+
+# CONDITIONS OF USE
+
+9. Statistics Canada may modify this agreement at any time, and such modifications shall be effective immediately upon posting of the modified agreement on the Statistics Canada Website..
+
+# TERM
+
+10. This Agreement comes into force when signed by both Parties and shall continue in force until terminated in accordance herewith.
+
+# TERMINATION
+
+11.(1) Statistics Canada may, by providing ten days written notice to the Licensee, terminate this Agreement if the Licensee fails to comply with any of the terms of this Agreement and to remedy such breach within the notice period.
+
+11.(2) In the event of termination, the Licensee must immediately return the Microdata files to Statistics Canada, or destroy them and certify this destruction in writing to Statistics Canada.
+
+12. Any notice to be given to Statistics Canada or the Licensee shall be in writing and sent by registered mail, electronic mail or facsimile.
+
+13.Sections 7 and 9 hereof survive the termination of this Agreement pursuant to section 12.
+
+# AMENDMENT
+
+14. No amendment to this Agreement shall be valid unless it is reduced to writing and signed by the Parties hereto.
+
+# ENTIRE AGREEMENT
+
+15. This Agreement constitutes the entire agreement between Statistics Canada and the Licensee with respect to the Licensee’s right to use the Microdata files.
+
+# APPROPRIATE LAW
+
+16. This Agreement shall be governed and construed in accordance with the laws of the province of Ontario and the laws of Canada applicable therein. The parties hereby attorn to the exclusive jurisdiction of the Federal Court of Canada..
+
+# APPENDIX II
+
+End-use Licence Agreement for Postal CodeOM Conversion File, Postal Codes OM by Federal Ridings File and Postal CodeOM Conversion File Plus (“data product”)
+
+The Government of Canada (Statistics Canada) is the owner or a licensee of all intellectual property rights in this data product. With your payment of the requisite fee, you (hereinafter referred to as 'the Licensee') are granted a non-exclusive, non-assignable and non-transferable licence to use this data product subject to the terms below. This licence is not a sale of any or all of the rights of the owner(s). The data product includes information taken with permission from © Canada Post Corporation. All rights reserved. Information taken with permission from Canada Post Corporation does not form part of the Government of Canada open data portal.
+
+# Terms of use
+
+1. The Licensee shall not lend, rent, lease, sublicense, distribute, make public, transfer or sell any part of the data product nor any right granted under this agreement to any person outside the licensed organization or to any other organization.
+
+2. The Licensee shall not disassemble, decompile or in any way attempt to reverse engineer any part of the data product.
+
+3. The Licensee shall not use any part of the data product to develop or derive any other data product or data service for external distribution or commercial sale.
+
+4. The Licensee shall not use the data product other than for the purpose of matching postal codeOM data to geography in accordance with Appendix ‘A’. 5. The Licensee shall not use the data product for the following mail preparation purposes:
+
+(i) addressing mail;
+
+(ii) presorting addressed mail;
+
+(iii) preparing unaddressed mail by householder count for delivery
+
+6. The Licensee agrees not to merge or link the data product with any other databases in such a fashion that gives the appearance that the Licensee may have received, or had access to, information held by Statistics Canada about any identifiable individual, family, household, organization or business.
+
+7. The Licensee is granted rights of use of the content of this data product for the purpose expressly described in Appendix ‘A’, attached, and for no other purpose. In such cases, the source of the data must be acknowledged in all documents and communications by providing the following source citation at the bottom of each table and graph:
+
+Source: (or Adapted from) Statistics Canada (Select either Postal Code Conversion File or Postal Codes by Federal Ridings File and Postal Code Conversion File Plus (reference date) which is based on data licensed from Canada Post Corporation.
+
+8. The Licensee may publish an extract of up to 1% of the data product pursuant to Appendix ‘A’. This permission includes the use of the extracted data in support of analyses and in reporting of results and conclusions. The Licensee shall obtain approval from Statistics Canada before publishing extract of the data product in excess of 1%.
+
+9. The Licensee is authorized to provide the data product to contractors/consultants only for the purpose of “providing data manipulation and consulting services exclusively to Licensee. Upon completion of work, the contractor/consultant must i) return all data products to Licensee, and ii) delete the data product from their systems and premises.” Contractors or consultants may not use the data product or derived products for their own purposes or to offer services to third parties.
+
+10. The Licensee must display the following disclaimer on each search access point if the data product is used in a search engine application pursuant to Appendix ‘A’: “this tool does not validate postal codesOM”.
+
+11. The Licensee agrees to permit Statistics Canada to provide to Canada Post upon request, a copy of this signed agreement for audit purposes only.
+
+# Term
+
+This licence must be renewed on an annual basis to permit continued use of the data product(s).
+
+# Termination
+
+Any violation of this licence renders it void and of no effect. This agreement will terminate automatically without notice if the Licensee fails to comply with any of the terms of this agreement.
+
+Statistics Canada or the Licensee may terminate this agreement without cause upon thirty (30) day written notice or at a time otherwise agreed upon by both parties. In the event of termination, the Licensee must immediately return the data product to Statistics Canada or destroy it and certify this destruction in writing to Statistics Canada.
+
+# Warranties and disclaimers
+
+This data product is provided ‘as-is,’ and Statistics Canada and its licensors make no warranty, either express or implied, including but not limited to, warranties of merchantability and fitness for a particular purpose. In no event will Statistics Canada or its licensors be liable for any direct, special, indirect, consequential or other damages, however caused.
+
+# Indemnification
+
+The Licensee shall at all times indemnify and save harmless Statistics Canada its officers, servants and agents from and against all claims, demands, losses, damages, costs, actions, or other proceedings made, sustained, brought or prosecuted by any person, in any manner, based upon, occasioned by or attributed to any injury, infringement, or damage arising out of the use of the data product, or arising out of a breach, by the Licensee, of any of its obligations under this agreement.
+
+# Acceptance of terms
+
+It is your responsibility to ensure that your use of this data product complies with these terms. Any infringement of Statistics Canada's rights may result in legal action.
+
+Any use whatsoever of this data product shall constitute your acceptance of the terms of this agreement.
+
+# APPENDIX III
+
+License Agreement for the Disc harge Abstract Database (DAD) Research Analytic Files from the Canadian Institute for Health Information (CIHI)
+
+# DESCRIPTION OF PRODUCT
+
+1. The Discharge Abstract Database (DAD) Research Analytic Files referred to in this Agreement relate to research analytic files (‘clinical’ and ‘geographic’) that are de- identified samples fromCIHI’s Discharge Abstract Database (sampled from fiscal years 2009–2010 and 2010–2011) contained in the DLI Collection (the “CIHI Files”).”
+
+# CONTACT AND CUSTODIAN
+
+2.(1) The Licensee hereby nominates the DLI contact as the contact person to whom all further communication shall be addressed by Statistics Canada or CIHI on any matter concerning this Agreement.
+
+2.(2) The Licensee hereby nominates the DLI contact as the designated custodian of the CIHI Files with responsibility for ensuring their proper use and custody pursuant to the terms of this Agreement.
+
+# DELIVERY OF PRODUCT
+
+3.Upon signature of this Agreement, Statistics Canada shall provide to the Licensee access to the CIHI Files and one copy of the related documentation.
+
+# OWNERSHIP
+
+4.The CIHI Files and related documentation shall at all times be and remain the sole and exclusive property of CIHI, it being mutually agreed that this Agreement involves a limited licence for the use of the CIHI Files and related documentation and that nothing contained herein shall be deemed to convey any title or ownership interest in the CIHI Files or the related documentation to the Licensee.
+
+# USE OF CIHI FILES
+
+5.(1) Statistics Canada hereby grants to the Licensee a non-exclusive, non-assignable and non-transferable limited licence to use the CIHI Files and related documentation for statistical and research purposes. The CIHI Files and related documentation shall not be used for any other purposes without the prior written consent of CIHI.
+
+5.(2) Use of the CIHI Files and related documentation is limited to the Licensee. The CIHI Files and related documentation cannot be reproduced or transmitted to any person or organization outside of the Licensee’s or ganization.
+
+5.(3) The Licensee shall not merge or link the records on the CIHI Files with any other databases for the purpose of attempting to identify an individual person, business or organization.
+
+5.(4) The Licensee shall not present information from the CIHI Files in such a manner that gives the appearance that the Licensee may have received, or had access to, information held by CIHI about any identifiable person, business or organization.
+
+5.(5) The Licensee shall not disassemble, decompile or in any way attempt to reverse engineer any software provided as part of the CIHI Files.
+
+# NO WARRANTY AND NO LIABILITY
+
+6.The CIHI Files are licenced ‘as-is,’ and CIHI makes no representation or warranties whatsoever with respect to the CIHI Files, whether express or implied, in relation to the CIHI Files and expressly disclaims any implied warranty or merchantability or fitness for a particular purpose of the CIHI Files.
+
+The Canadian Institute for Health Information or any of its officials employees, agents, successors and Assigns shall not be liable for any errors or omissions in the CIHI Files and shall not, under any circumstances, be liable for any direct, indirect, special, incidental, consequential, or other loss injury, damage, however caused, that you may suffer at any time by reason of your possession, access to or use of the CIHI Files arising out of the exercise of your rights or the fulfilment of your obligations under this agreement.
+
+# PUBLICATION BY THE LICENSEE
+
+7. In any publication of any information based on the CIHI Files, the Licensee shall use the following form of accreditation: “Parts of this material are based on the Canadian Institute for Health Information Discharge Abstract Database Research Analytic Files(sampled from fiscal years 2009 – 2010 and 2010 – 2011). However the analysis, conclusions, opinions and statements expressed herein are those of the author(s) and not those of the Canadian Institute for Health Information.”
+
+# CONDITION OF USE
+
+8. Statistics Canada may modify this agreement at any time with respect to the Licensee’s right to use the CIHI Files and related documentation and such modifications shall be effective immediately upon posting of the modified agreement on the Statistics Canada Website.
+
+# TERM
+
+9. This Agreement com es into force when signed by both Parties and shall continue in force until terminated in accordance herewith.
+
+# TERMINATION
+
+10.(1) Statistics Canada may, by providing ten days written notice to the Licensee, terminate this Agreement if the Licensee fails to comply with any of the terms of this Agreement and to remedy such breach within the notice period.
+
+10.(2) In the event of termination, the Licensee must immediately return the CIHI Files and related documentation to Statistics Canada, or destroy them an d certify this destruction in writing to Statistics Canada.
+
+11. Any notice to be given to Statistics Canada or the Licensee shall be in writing and sent by registered mail, electronic mail or facsimile.
+
+12. Sections 4, 6 and 8 hereof survive the termination of this Agreement pursuant to Section 11.
+
+# AMENDMENT
+
+13. No amendment to this Agreement shall be valid unless it is reduced to writing and signed by the Parties hereto.
+
+# ENTIRE AGREEMENT
+
+14. This Agreement constitutes the entire agreement between Statistics Canada and the Licensee with respect to the Licensee’s right to use the CIHI Files and related documentation.
+
+# APPROPRIATE LAW
+
+15.This Agreement shall be governed and construed in accordance with the laws of the province of Ontario and the laws of Canada applicable therein. The parties hereby attorn to the exclusive jurisdiction of the Federal Court of Canada.
+
+Appendix A – Approved Postal Code Data Matching Uses for DLI Accredited Canadian Post Secondary Institution
+
+Matching Postal Code data to geography for:
+
+Teaching and learning purposes.
+
+E.g.: Students can download PCCF on their laptop to do their assignments. This includes projects, maps, analytical papers, etc. Faculty can download and use the PCCF in teaching exercises.
+Research purposes
+
+E.g.: Can be used in analysis to write articles that are published in journals. The data is not shared but the results are published. This also includes thesis for Masters or Doctorate where results are required to be public.
+Planning purposes – where the institution can use the information in planning student recruitment activities or find out where these students are coming from.
+
+
+# Introduction
+
+The "Service" means, collectively, all aspects of the Abacus / NESSTAR and associated services and websites.
+The term "Content" means the data, text, graphics, photos, sounds, music, videos, audiovisual combinations, interactive features, software, scripts, and any other electronic materials you may view on or access through the Service.
+Your Acceptance of this Agreement
+
+By clicking you agree to the terms and conditions of this Agreement, which supplement the policies, rules and requirements of your institution.
+If you do not agree to these Terms of Use you must not log in, access, browse or otherwise use the Service. If you have questions or concerns, please contact research.data@ubc.ca.
+Use of the Service and Content
+
+Use of the Service and Your Content. You may access and use the Content uploaded on the Service strictly in compliance with the copyright terms identified on or associated with such Content.
+General Conditions of Use
+
+Without limiting the foregoing and the prohibited uses set out in Policy #104, Acceptable Use and Security of UBC Electronic Information and Systems, which is hereby incorporated by reference, the following is not permitted:
+using any automated system, including without limitation, "robots," "spiders," or "offline readers," to harvest or scrape information from the Service or any part(s) thereof, or to send more request messages in a given period of time than a human can reasonably produce in the same period by using a conventional on-line web browser; or
+in any way intentionally placing undue burden on the technical systems or networks connected to the Service.
+UBC may suspend your account, or access to the Service, if it learns or is credibly notified (as determined by UBC) that your conduct is in violation of these Terms of Use.
+Liability and Indemnity
+
+The Service and the Content is provided to you AS IS. You understand that UBC does not endorse any Content submitted to the Service by any user, or any opinion, recommendation, or advice expressed therein, and UBC expressly disclaims any and all liability in connection with Content, including without limitation all direct, indirect, special, incidental or consequential damage or any other damages whatsoever and howsoever caused, arising out of or in connection with the use of the Service or any Content, or in reliance on the Service or the Content.
+In addition, the Service may contain links to third party websites. UBC has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party websites.
+You agree to indemnify and hold harmless UBC, its Board of Governors, agents, contractors, licensors, and licensees against any all claims arising from or in any way relating to your use of the Service.
+Trademarks
+
+Certain words, phrases, names, designs or logos used on the Site may constitute trademarks, service marks or trade names of the UBC or other entities. The display of any such marks or names on the Site does not imply that UBC or other entities have granted a license or authorization of any kind to use such marks or names. You may not use any of UBC's trademarks, service marks or trade names without UBC's prior written permission.
+Choice of Law
+
+The laws of the Province of British Columbia and the laws of Canada applicable therein shall govern as to the interpretation, validity and effect of this document, notwithstanding any conflict of laws provisions of your domicile, residence or physical location. You hereby consent and submit to the exclusive jurisdiction of the courts of the Province of British Columbia in any action or proceeding instituted under or related to your use of the Service.
