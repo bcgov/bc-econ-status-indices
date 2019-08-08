@@ -19,6 +19,9 @@ if (!exists(".setup_sourced")) source(here::here("R/setup.R"))
 ## https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm
 ## e.g. for shp files for census tracts, download: https://www12.statcan.gc.ca/census-recensement/alternative_alternatif.cfm?l=eng&dispext=zip&teng=lct_000a16a_e.zip&k=%20%20%20%20%207190&loc=http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lct_000a16a_e.zip
 
+# set the path for files
+path <- file.path(here::here("shp-files"))
+
 ## set the map colors:
 pal_ct <- colorRampPalette(brewer.pal(9, "BrBG"))
 pal_cd <- colorRampPalette(brewer.pal(9, "YlOrBr"))
@@ -45,7 +48,7 @@ ggplot2::ggplot() +
 
 # exploring 2016 census division (cd):
 
-cd <- read_sf(here("shp-files", "lcd_000a16a_e.shp")) %>%
+cd <- read_sf("shp-files/lcd_000a16a_e.shp") %>%
   filter(PRNAME == "British Columbia / Colombie-Britannique") %>%
   st_transform(3005)
 
@@ -63,7 +66,7 @@ ggplot2::ggplot() +
 
 # exploring 2016 census subdivision (csd):
 
-csd <- read_sf(here("shp-files", "lcsd000a16a_e.shp")) %>%
+csd <- read_sf("shp-files/lcsd000a16a_e.shp") %>%
   filter(PRNAME == "British Columbia / Colombie-Britannique") %>%
   st_transform(3005)
 
@@ -81,7 +84,7 @@ ggplot2::ggplot() +
 
 # exploring 2016 forward sortation area (fsa):
 
-fsa <- read_sf(here("shp-files", "lfsa000a16a_e.shp")) %>%
+fsa <- read_sf("shp-files/lfsa000a16a_e.shp") %>%
   filter(PRNAME == "British Columbia / Colombie-Britannique") %>%
   st_transform(3005)
 
@@ -183,6 +186,9 @@ pccf_ct_subset <- pccf %>%
 pccf_ct_subset$CT <- paste0(pccf_ct_subset$SAC_new,pccf_ct_subset$CTnam_digit_repair2)
 
 # OR: pccf_ct_subset$CT2 <- formatC(as.numeric(pccf_ct_subset$CT), width = 7, format="d", flag = "0")
+
+pccf_ct_subset$CTname_extraction_vec <- as.character(pccf_ct_subset$CTname_extraction)
+pccf_ct_subset$CTname_extraction_vec[pccf_ct_subset$CTname_extraction_vec == 0] <- "00"
 
 # set scientific notation
 
