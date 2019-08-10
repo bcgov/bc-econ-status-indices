@@ -15,8 +15,6 @@ The source .csv files are tidied anonymized individual and family income tax dat
 
 The codes for economic indices and visualization of data are in `R` subfolder.  
 
-Generated graphs and data aggregates can be stored in `output-data` subfolder. 
-
 Insights developed from analyses of data tables and references are provided in rmd format in  `docs` subfolder.
 
 
