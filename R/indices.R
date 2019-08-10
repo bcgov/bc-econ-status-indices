@@ -36,19 +36,42 @@ linked_data <- inner_join(tax_data_linkage, synthetic_data_linkage, by = "postal
 
 #-------------------------------------------------------------------------------
 
-# Generate urban and rural indices
+# Generate quintile range of income for urban areas
 
 urban_index <- linked_data %>%
   group_by(`year`) %>%
-  filter(`level|of|geo` == 61) %>%
+  filter(`level|of|geo` == 61) %>% # geo level 61 denotes census tracts (urban regions)
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
+#-------------------------------------------------------------------------------
 
-rural_index <- linked_data %>%
+# Generate quintile range of income for rural areas (composite)
+
+rural_index_rc <- linked_data %>%
   group_by(`year`) %>%
-  filter(`level|of|geo` == c(6,9,21)) %>%
-  mutate(RQs =  ntile(`total|income|median|total`, 5)) %>%
+  filter(`level|of|geo` == 9) %>% # geo level 9 denotes rural communities
+  mutate(RQ_a =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
+
+rural_index_rpc <- linked_data %>%
+  group_by(`year`) %>%
+  filter(`level|of|geo` ==  6) %>% # geo level 6 denote rural postal codes
+  mutate(RQ_b =  ntile(`total|income|median|total`, 5)) %>%
+  ungroup()
+
+rural_index_cd <- linked_data %>%
+  group_by(`year`) %>%
+  filter(`level|of|geo` == 21) %>% # geo levels 21 denotes census division
+  mutate(RQ_c =  ntile(`total|income|median|total`, 5)) %>%
+  ungroup()
+
+# merge indices together
+rural_index <- plyr::rbind.fill(rural_index_rc, rural_index_rpc, rural_index_cd, rural_index_cd) %>%
+  mutate(RQs = c(na.omit(RQ_a),na.omit(RQ_b), na.omit(RQ_c)))
+
+# clean out additional columns
+drop.cols <- c("RQ_a", "RQ_b", "RQ_c")
+rural_index %>% select(-one_of(drop.cols))
 
 
