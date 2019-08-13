@@ -48,9 +48,10 @@ urban_index <- linked_data %>%
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
-# remove NA's in the studyid column
+# remove NA's in the studyid column and export as csv
 urban_index %>%
-  drop_na(studyid)
+  drop_na(studyid) %>%
+  write_csv(here::here("output-data", "urban-index.csv"))
 
 
 #-------------------------------------------------------------------------------
@@ -87,11 +88,24 @@ rural_index_rc %>%
 
 # merge indices together and drop NA's in studyid column
 rural_index <- plyr::rbind.fill(rural_index_rc, rural_index_rpc, rural_index_cd, rural_index_cd) %>%
-  mutate(RQs = c(na.omit(RQ_a),na.omit(RQ_b), na.omit(RQ_c))) %>%
-  drop_na(studyid)
+  mutate(RQs = c(na.omit(RQ_a),na.omit(RQ_b), na.omit(RQ_c)))
 
 # clean out additional columns
 drop.cols <- c("RQ_a", "RQ_b", "RQ_c")
 rural_index <- rural_index %>% select(-one_of(drop.cols))
 
 
+# remove NA's in the studyid column and export as csv
+rural_index %>%
+  drop_na(studyid) %>%
+  write_csv(here::here("output-data", "rural-index.csv"))
+
+#-------------------------------------------------------------------------------
+
+
+# Combine rural and urban indices and output one csv for linked data
+rural <- fread(here::here("output-data", "rural-index.csv"))
+urban <- fread(here::here("output-data", "urban-index.csv"))
+
+bc_indices <- plyr::rbind.fill(rural, urban) %>%
+  write_csv(here::here("output-data", "bc-index.csv"))
