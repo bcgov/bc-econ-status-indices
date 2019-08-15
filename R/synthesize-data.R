@@ -44,47 +44,90 @@ data$date <- sample(seq(as.Date('2000/01/01'), as.Date('2015/01/01'), by="day"),
 
 #-------------------------------------------------------------------------------
 
-## Generate random date and times!
-# set start and end dates to sample between
-day.start <- "2000/01/01"
-day.end <- "2015/12/31"
-
-# Define a random date/time selection function
-rand.day.time <- function(day.start,day.end,size) {
-  dayseq <- seq.Date(as.Date(day.start),as.Date(day.end),by="day")
-  dayselect <- sample(dayseq,size,replace=TRUE)
-  hourselect <- sample(1:24,size,replace=TRUE)
-  minselect <- sample(0:59,size,replace=TRUE)
-  as.POSIXlt(paste(dayselect, hourselect,":",minselect,sep="") )
-}
-
-data$time <- rand.day.time(day.start,day.end,size=7000)
-
-#-------------------------------------------------------------------------------
-
-## Add additional attributes to the data (e.g. geo concepts)
-# Add geographic levels to a column in the data
-geo <- c("3", "6", "7", "8", "9", "10", "11", "12", "21",
-         "31", "41", "51", "61", "42")
-
-# fill geos to the length of columns in data
-data$geo <- rep(geo, 500)
-
-#-------------------------------------------------------------------------------
-
-## Generate random postal codes from IND_1 master file
+## Generate random concepts based on IND_1 master file
 tax_data <- fread(here::here("input-data", "1_IND.csv"))
 
 # select the postal codes merge with data
-PostalCode <- tax_data %>%
-  select(`postal|area`) %>%
-  distinct(`postal|area`) %>%
+postal_concept <- tax_data %>%
+  select(`postal|area`, `level|of|geo`) %>%
+  distinct(`postal|area`, `level|of|geo`) %>%
   sample_n(7000, replace = TRUE)
 
 # add selected postal codes to data
-data <- cbind(PostalCode, data)
+data <- cbind(postal_concept, data)
 
 #-------------------------------------------------------------------------------
+
+# Generate a walk key for urban areas (CT's or geo level = 61) to allow linkage with tax data
+nrow_ct <- data %>%
+  filter(`level|of|geo` == 61) %>%
+  tally()
+
+walk_key_ct <- as.data.frame(sample(1:3000, size =nrow_ct$n, replace=FALSE))
+colnames(walk_key_ct)[1] <- "walk_ct"
+
+# generate new data for ct's
+ct_data <- data %>%
+  filter(`level|of|geo` == 61) %>%
+  mutate(ct_walk = walk_key_ct$walk_ct)
+
+
+
+# Generate a walk key for rural areas (geo level = 6/9/21) to allow linkage with tax data
+## Level of Geography (L.O.G.): 09 = Postal Area: Rural Communities (Not in City)
+nrow_rc <- data %>%
+  filter(`level|of|geo` == 9) %>%
+  tally()
+
+
+walk_key_rc <- as.data.frame(sample(3001:6000, size =nrow_rc$n, replace=FALSE))
+colnames(walk_key_rc)[1] <- "walk_rc"
+
+# generate new data for rc's
+rc_data <- data %>%
+  filter(`level|of|geo` == 9) %>%
+  mutate(rc_walk = walk_key_rc$walk_rc)
+
+
+## Level of Geography (L.O.G.): 06 = Postal Area: Rural Postal Code Areas (Within City)
+nrow_rpc <- data %>%
+  filter(`level|of|geo` == 6) %>%
+  tally()
+
+walk_key_rpc <- as.data.frame(sample(6001:9000, size =nrow_rpc$n, replace=FALSE))
+colnames(walk_key_rpc)[1] <- "walk_rpc"
+
+# generate new data for rpc's
+rpc_data <- data %>%
+  filter(`level|of|geo` == 6) %>%
+  mutate(rpc_walk = walk_key_rpc$walk_rpc)
+
+
+
+## Level of Geography (L.O.G.): 21 = Area: Census Division
+nrow_cd <- data %>%
+  filter(`level|of|geo` == 21) %>%
+  tally()
+
+walk_key_cd <- as.data.frame(sample(9001:12000, size =nrow_cd$n, replace=FALSE))
+colnames(walk_key_cd)[1] <- "walk_cd"
+
+# generate new data for cd's
+cd_data <- data %>%
+  filter(`level|of|geo` == 21) %>%
+  mutate(cd_walk = walk_key_cd$walk_cd)
+
+#-------------------------------------------------------------------------------
+
+# merge all geograaphical concepts together
+merged_data <- cbind.fill(data, cd_data$cd_walk, rpc_data$rpc_walk, rc_data$rc_walk, ct_data$ct_walk)
+
+#-------------------------------------------------------------------------------
+
+# fix colnames before output
+colnames(merged_data)[39:42] <- c("key_1", "key_2", "key_3", "key_4")
+colnames(merged_data)[1:2] <- c("postal|area", "level|of|geo")
+
 # write out the data table
-write_csv(data, here::here("input-data", "synthetic-data.csv"))
+write_csv(merged_data, here::here("input-data", "synthetic-data.csv"))
 
