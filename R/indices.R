@@ -44,7 +44,7 @@ naniar::miss_var_summary(linked_data)
 
 urban_index <- linked_data %>%
   group_by(`year`) %>%
-  filter(key_1 ) %>% # geo level 61 denotes census tracts (urban regions)
+  filter(key_1 %in% (1:3000) | key_2 %in% (1:3000) | key_3 %in% (1:3000) | key_4 %in% (1:3000)) %>% # geo level 61 denotes census tracts (urban regions)
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
@@ -62,7 +62,7 @@ urban_index %>%
 
 rural_index_rc <- linked_data %>%
   group_by(`year`) %>%
-  filter(`level|of|geo` == 9) %>%
+  filter(key_1 %in% (3001:6000) | key_2 %in% (3001:6000) | key_3 %in% (3001:6000) | key_4 %in% (3001:6000)) %>%
   mutate(RQ_a =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
@@ -70,14 +70,14 @@ rural_index_rc <- linked_data %>%
 
 rural_index_rpc <- linked_data %>%
   group_by(`year`) %>%
-  filter(`level|of|geo` ==  6) %>%
+  filter(key_1 %in% (6001:9000) | key_2 %in% (6001:9000) | key_3 %in% (6001:9000) | key_4 %in% (6001:9000)) %>%
   mutate(RQ_b =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
 ## Level of Geography (L.O.G.): 21 = Area: Census Division
 rural_index_cd <- linked_data %>%
   group_by(`year`) %>%
-  filter(`level|of|geo` == 21) %>%
+  filter(key_1 %in% (9001:12000) | key_2 %in% (9001:12000) | key_3 %in% (9001:12000) | key_4 %in% (9001:12000)) %>%
   mutate(RQ_c =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
@@ -109,3 +109,8 @@ urban <- fread(here::here("output-data", "urban-index.csv"))
 
 bc_indices <- plyr::rbind.fill(rural, urban) %>%
   write_csv(here::here("output-data", "bc-index.csv"))
+
+#-------------------------------------------------------------------------------
+
+# Check bc index data and proceed with analysis
+bc <- fread(here::here("output-data", "bc-index.csv"))
