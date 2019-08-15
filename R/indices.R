@@ -27,12 +27,12 @@ tax_data <- fread(here::here("input-data", "1_IND.csv"))
 ## merge tax data and synthetic data tables
 
 synthetic_data_linkage <- synthetic_data %>%
-  select(studyid, `postal|area`)
+  select(studyid, `postal|area`, `level|of|geo`, key_1, key_2, key_3, key_4)
 
 tax_data_linkage <- tax_data %>%
   select(`year`, `postal|area`, `level|of|geo`, `place|name|geo`, `total|income|median|total`)
 
-linked_data <- left_join(tax_data_linkage, synthetic_data_linkage, by = "postal|area")
+linked_data <- full_join(tax_data_linkage, synthetic_data_linkage, by = "postal|area")
 
 # check whether data has NA's after left_join
 naniar::miss_var_summary(linked_data)
@@ -44,7 +44,7 @@ naniar::miss_var_summary(linked_data)
 
 urban_index <- linked_data %>%
   group_by(`year`) %>%
-  filter(`level|of|geo` == 61) %>% # geo level 61 denotes census tracts (urban regions)
+  filter(key_1 ) %>% # geo level 61 denotes census tracts (urban regions)
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
