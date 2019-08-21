@@ -61,7 +61,7 @@ data <- cbind(postal_concept, data)
 # Generate a walk key for urban areas (CT's or geo level = 61) to allow linkage with tax data
 nrow_ct <- data %>%
   filter(`level|of|geo` == 61) %>%
-  tally()
+  tally() # repeat steps above until nrow_ct$n is less than 3000
 
 walk_key_ct <- as.data.frame(sample(1:3000, size =nrow_ct$n, replace=FALSE))
 colnames(walk_key_ct)[1] <- "walk_ct"
@@ -120,7 +120,7 @@ cd_data <- data %>%
 #-------------------------------------------------------------------------------
 
 # merge all geograaphical concepts together
-merged_data <- cbind.fill(data, cd_data$cd_walk, rpc_data$rpc_walk, rc_data$rc_walk, ct_data$ct_walk)
+merged_data <- rowr::cbind.fill(data, cd_data$cd_walk, rpc_data$rpc_walk, rc_data$rc_walk, ct_data$ct_walk)
 
 #-------------------------------------------------------------------------------
 
