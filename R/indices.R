@@ -66,6 +66,10 @@ rural_index_rc <- linked_data %>%
   mutate(RQ_a =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
+# check duplicates in `postal|area`
+rural_index_rc %>%
+  filter(year == 2015)
+
 ## Level of Geography (L.O.G.): 06 = Postal Area: Rural Postal Code Areas (Within City)
 
 rural_index_rpc <- linked_data %>%
@@ -74,24 +78,12 @@ rural_index_rpc <- linked_data %>%
   mutate(RQ_b =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
-## Level of Geography (L.O.G.): 21 = Area: Census Division
-rural_index_cd <- linked_data %>%
-  group_by(`year`) %>%
-  filter(key_1 %in% (9001:12000) | key_2 %in% (9001:12000) | key_3 %in% (9001:12000) | key_4 %in% (9001:12000)) %>%
-  mutate(RQ_c =  ntile(`total|income|median|total`, 5)) %>%
-  ungroup()
-
-# check duplicates in `postal|area`
-rural_index_rc %>%
-  filter(year == 2015)
-
-
 # merge indices together and drop NA's in studyid column
-rural_index <- plyr::rbind.fill(rural_index_rc, rural_index_rpc, rural_index_cd, rural_index_cd) %>%
-  mutate(RQs = c(na.omit(RQ_a),na.omit(RQ_b), na.omit(RQ_c)))
+rural_index <- plyr::rbind.fill(rural_index_rc, rural_index_rpc) %>%
+  mutate(RQs = c(na.omit(RQ_a),na.omit(RQ_b)))
 
 # clean out additional columns
-drop.cols <- c("RQ_a", "RQ_b", "RQ_c")
+drop.cols <- c("RQ_a", "RQ_b")
 rural_index <- rural_index %>% select(-one_of(drop.cols))
 
 
@@ -101,7 +93,6 @@ rural_index %>%
   write_csv(here::here("output-data", "rural-index.csv"))
 
 #-------------------------------------------------------------------------------
-
 
 # Combine rural and urban indices and output one csv for linked data
 rural <- fread(here::here("output-data", "rural-index.csv"))
@@ -114,3 +105,23 @@ bc_indices <- plyr::rbind.fill(rural, urban) %>%
 
 # Check bc index data and proceed with analysis
 bc <- fread(here::here("output-data", "bc-index.csv"))
+
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+# In the case that postal geographies do not fall into urban or rural designations,
+# we can take CD as they cover all of BC
+
+## Level of Geography (L.O.G.): 21 = Area: Census Division
+census_division_index <- linked_data %>%
+  group_by(`year`) %>%
+  filter(key_1 %in% (9001:12000) | key_2 %in% (9001:12000) | key_3 %in% (9001:12000) | key_4 %in% (9001:12000)) %>%
+  mutate(RQ_cd =  ntile(`total|income|median|total`, 5)) %>%
+  ungroup()
+
+# remove NA's in the studyid column and export as csv
+census_division_index %>%
+  drop_na(studyid) %>%
+  write_csv(here::here("output-data", "census_division_index.csv"))
+
+
+
