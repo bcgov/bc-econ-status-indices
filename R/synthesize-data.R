@@ -121,7 +121,7 @@ cd_data <- data %>%
 #-------------------------------------------------------------------------------
 
 # merge all geograaphical concepts together
-merged_data <- plyr::rbind.fill(data, cd_data, rpc_data, rc_data, ct_data)
+merged_data <- rowr::cbind.fill(data, as.data.frame(cd_data$cd_walk), as.data.frame(rpc_data$rpc_walk), as.data.frame(rc_data$rc_walk), as.data.frame(ct_data$ct_walk))
 
 #-------------------------------------------------------------------------------
 
