@@ -11,9 +11,11 @@ The annual income tax data in this repository are purchased from Statistics Cana
 
 ### Usage 
 
-The source .csv files are tidied anonymized individual and family income tax data that are placed in the `input-data` subfolder.  
+The source .csv files are tidied anonymized individual and family income tax data and are placed in the `input-data` subfolder.  
 
-The codes for economic indices and visualization of data are in `R` subfolder.  
+The codes for synthesizing data and making economic indices are in `R` subfolder, named `synthesize_data.R` and `indicies.R` respectively. The `set.up.R` script contains the project's library dependencies. 
+
+The urban and rural indices designated as urban quintile (UQ) and rural quintile (RQ) are saved in .csv files in the `output-data` subfolder.  
 
 Insights developed from analyses of data tables and references are provided in rmd format in  `docs` subfolder.
 
