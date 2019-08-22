@@ -58,7 +58,8 @@ data <- cbind(postal_concept, data)
 
 #-------------------------------------------------------------------------------
 
-# Generate a walk key for urban areas (CT's or geo level = 61) to allow linkage with tax data
+# Primary/linkage key generation to enable data linkage
+# 1. Generate a walk key for urban areas (CT's or geo level = 61) to allow linkage with tax data
 nrow_ct <- data %>%
   filter(`level|of|geo` == 61) %>%
   tally() # repeat steps above until nrow_ct$n is less than 3000
@@ -72,8 +73,7 @@ ct_data <- data %>%
   mutate(ct_walk = walk_key_ct$walk_ct)
 
 
-
-# Generate a walk key for rural areas (geo level = 6/9/21) to allow linkage with tax data
+# 2. Generate a walk key for rural areas (geo level = 6/9) to allow linkage with tax data
 ## Level of Geography (L.O.G.): 09 = Postal Area: Rural Communities (Not in City)
 nrow_rc <- data %>%
   filter(`level|of|geo` == 9) %>%
@@ -103,7 +103,8 @@ rpc_data <- data %>%
   mutate(rpc_walk = walk_key_rpc$walk_rpc)
 
 
-
+# 3. Generate a walk key for census divisions (geo level = 21) to allow linkage with tax data
+# this level will be used if postal codes don't fall in urban or rural areas
 ## Level of Geography (L.O.G.): 21 = Area: Census Division
 nrow_cd <- data %>%
   filter(`level|of|geo` == 21) %>%
@@ -120,11 +121,12 @@ cd_data <- data %>%
 #-------------------------------------------------------------------------------
 
 # merge all geograaphical concepts together
-merged_data <- rowr::cbind.fill(data, cd_data$cd_walk, rpc_data$rpc_walk, rc_data$rc_walk, ct_data$ct_walk)
+merged_data <- plyr::rbind.fill(data, cd_data, rpc_data, rc_data, ct_data)
 
 #-------------------------------------------------------------------------------
 
 # fix colnames before output
+# replace key_1 for cd's, key_2 for rpc's, key_3 for rc's, and key_4 for ct's
 colnames(merged_data)[39:42] <- c("key_1", "key_2", "key_3", "key_4")
 colnames(merged_data)[1:2] <- c("postal|area", "level|of|geo")
 
