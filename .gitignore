@@ -3,5 +3,4 @@
 .RData
 .DS_Store
 .Ruserdata
-.drake/
-.drake_history/
+./drake
