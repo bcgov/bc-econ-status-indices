@@ -24,17 +24,17 @@ tax_data <- fread(here::here("input-data", "1_IND.csv"))
 #-------------------------------------------------------------------------------
 
 # Make data ready for index generation
-## merge tax data and synthetic data tables
+## merge tax data and synthetic data tables (here named `linked_data``)
 
 synthetic_data_linkage <- synthetic_data %>%
-  select(studyid, `postal|area`, `level|of|geo`, key_1, key_2, key_3, key_4)
+  select(studyid, `postal|area`, `level|of|geo`, key_1, key_2, key_3, key_4) # may take other fields as necessary
 
 tax_data_linkage <- tax_data %>%
-  select(`year`, `postal|area`, `level|of|geo`, `place|name|geo`, `total|income|median|total`)
+  select(`year`, `postal|area`, `place|name|geo`, `total|income|median|total`) # may take other fields as necessary
 
 linked_data <- full_join(tax_data_linkage, synthetic_data_linkage, by = "postal|area")
 
-# check whether data has NA's after left_join
+# check whether data has NA's after left_join and summarize missing values
 naniar::miss_var_summary(linked_data)
 
 #-------------------------------------------------------------------------------
@@ -44,15 +44,18 @@ naniar::miss_var_summary(linked_data)
 
 urban_index <- linked_data %>%
   group_by(`year`) %>%
-  filter(key_1 %in% (1:3000) | key_2 %in% (1:3000) | key_3 %in% (1:3000) | key_4 %in% (1:3000)) %>% # geo level 61 denotes census tracts (urban regions)
+  filter(key_4 %in% (1:3000)) %>% # key_4 for geo level 61 denotes census tracts (urban regions)
   mutate(UQs =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
-# remove NA's in the studyid column and export as csv
-urban_index %>%
-  drop_na(studyid) %>%
-  write_csv(here::here("output-data", "urban-index.csv"))
+# check whether data has NA's after left_join and summarize missing values
+naniar::miss_var_summary(urban_index)
 
+# clean up the urban_index table and save
+drop.cols <- c("key_1", "key_2", "key_3")
+urban_index %>%
+  select(-one_of(drop.cols)) %>%
+  write_csv(here::here("output-data", "urban-index.csv"))
 
 #-------------------------------------------------------------------------------
 
@@ -60,36 +63,53 @@ urban_index %>%
 
 ## Level of Geography (L.O.G.): 09 = Postal Area: Rural Communities (Not in City)
 
-rural_index_rc <- linked_data %>%
+rural_rc <- linked_data %>%
   group_by(`year`) %>%
-  filter(key_1 %in% (3001:6000) | key_2 %in% (3001:6000) | key_3 %in% (3001:6000) | key_4 %in% (3001:6000)) %>%
-  mutate(RQ_a =  ntile(`total|income|median|total`, 5)) %>%
+  filter(key_3 %in% (3001:6000)) %>%
+  drop_na(studyid) %>%
   ungroup()
 
 # check duplicates in `postal|area`
-rural_index_rc %>%
+rural_rc %>%
   filter(year == 2015)
+
+# check whether data has NA's after left_join and summarize missing values
+naniar::miss_var_summary(rural_rc)
+
 
 ## Level of Geography (L.O.G.): 06 = Postal Area: Rural Postal Code Areas (Within City)
 
-rural_index_rpc <- linked_data %>%
+rural_rpc <- linked_data %>%
   group_by(`year`) %>%
-  filter(key_1 %in% (6001:9000) | key_2 %in% (6001:9000) | key_3 %in% (6001:9000) | key_4 %in% (6001:9000)) %>%
-  mutate(RQ_b =  ntile(`total|income|median|total`, 5)) %>%
+  filter(key_2 %in% (6001:9000)) %>%
+  drop_na(studyid) %>%
   ungroup()
 
-# merge indices together and drop NA's in studyid column
-rural_index <- plyr::rbind.fill(rural_index_rc, rural_index_rpc) %>%
-  mutate(RQs = c(na.omit(RQ_a),na.omit(RQ_b)))
+# check whether data has NA's after left_join and summarize missing values
+naniar::miss_var_summary(rural_rpc)
+
+
+# check whether postal|area's in rural_index_rpc and rural_index_rc differ
+# Yes, some are different
+all(rural_rpc$`postal|area` == rural_rc$`postal|area`)
+rural_rpc$`postal|area`[!(rural_rpc$`postal|area` %in% rural_rc$`postal|area`)]
+
+# merge rural geographies in data together and generate quintile range for total income
+rural_index <- full_join(rural_rpc, rural_rc) %>%
+  group_by(`year`) %>%
+  mutate(UQs = ntile(`total|income|median|total`, 5)) %>%
+  distinct(`level|of|geo`, `postal|area`, studyid, .keep_all = TRUE) # remove duplicated postal codes
+
+# check whether data has NA's after left_join and summarize missing values
+naniar::miss_var_summary(rural_index)
 
 # clean out additional columns
-drop.cols <- c("RQ_a", "RQ_b")
+drop.cols <- c("key_1", "key_4")
 rural_index <- rural_index %>% select(-one_of(drop.cols))
 
 
 # remove NA's in the studyid column and export as csv
 rural_index %>%
-  drop_na(studyid) %>%
   write_csv(here::here("output-data", "rural-index.csv"))
 
 #-------------------------------------------------------------------------------
@@ -108,19 +128,19 @@ bc <- fread(here::here("output-data", "bc-index.csv"))
 
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+
 # In the case that postal geographies do not fall into urban or rural designations,
 # we can take CD as they cover all of BC
 
 ## Level of Geography (L.O.G.): 21 = Area: Census Division
 census_division_index <- linked_data %>%
   group_by(`year`) %>%
-  filter(key_1 %in% (9001:12000) | key_2 %in% (9001:12000) | key_3 %in% (9001:12000) | key_4 %in% (9001:12000)) %>%
+  filter(key_1 %in% (9001:12000)) %>%
   mutate(RQ_cd =  ntile(`total|income|median|total`, 5)) %>%
   ungroup()
 
 # remove NA's in the studyid column and export as csv
 census_division_index %>%
-  drop_na(studyid) %>%
   write_csv(here::here("output-data", "census_division_index.csv"))
 
 
