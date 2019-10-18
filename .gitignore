@@ -4,4 +4,8 @@
 .DS_Store
 .Ruserdata
 docs/geo-concepts.html
+/input-data
+/output-data
+/shp-files
+/polygons
 
