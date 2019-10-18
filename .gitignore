@@ -3,4 +3,5 @@
 .RData
 .DS_Store
 .Ruserdata
-./drake
+docs/geo-concepts.html
+
