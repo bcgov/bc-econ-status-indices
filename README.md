@@ -1,5 +1,6 @@
  
-<a id="devex-badge" rel="Dormant" href="https://github.com/BCDevExchange/assets/blob/master/README.md"><img alt="Not currently being worked on, but with plans to come back to the work in the future." style="border-width:0" src="https://assets.bcdevexchange.org/images/badges/dormant.svg" title="Not currently being worked on, but with plans to come back to the work in the future." /></a>[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+![img](https://img.shields.io/badge/Lifecycle-Dormant-%23ff7f2a)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
 bc-econ-status-indices
